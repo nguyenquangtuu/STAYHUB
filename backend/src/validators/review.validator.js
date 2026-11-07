@@ -2,8 +2,13 @@ const { body } = require('express-validator');
 
 const createReviewValidator = [
   body('booking_id')
-    .notEmpty().withMessage('Mã đơn đặt phòng (booking_id) là bắt buộc')
-    .isInt({ min: 1 }).withMessage('booking_id phải là số nguyên dương'),
+    .custom((val, { req }) => {
+      const id = val || req.body.bookingId;
+      if (!id || !Number.isInteger(Number(id)) || Number(id) < 1) {
+        throw new Error('Mã đơn đặt phòng (booking_id hoặc bookingId) là bắt buộc và phải là số nguyên dương');
+      }
+      return true;
+    }),
 
   body('rating')
     .notEmpty().withMessage('Điểm đánh giá (rating) là bắt buộc')

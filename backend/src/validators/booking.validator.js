@@ -2,16 +2,31 @@ const { body, param } = require('express-validator');
 
 const createBookingValidator = [
   body('room_id')
-    .notEmpty().withMessage('Mã phòng (room_id) là bắt buộc')
-    .isInt({ min: 1 }).withMessage('room_id phải là số nguyên dương'),
+    .custom((val, { req }) => {
+      const id = val || req.body.roomId;
+      if (!id || !Number.isInteger(Number(id)) || Number(id) < 1) {
+        throw new Error('Mã phòng (room_id hoặc roomId) là bắt buộc và phải là số nguyên dương');
+      }
+      return true;
+    }),
 
   body('check_in')
-    .notEmpty().withMessage('Ngày nhận phòng (check_in) là bắt buộc')
-    .matches(/^\d{4}-\d{2}-\d{2}$/).withMessage('check_in phải có định dạng YYYY-MM-DD'),
+    .custom((val, { req }) => {
+      const date = val || req.body.checkIn;
+      if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        throw new Error('Ngày nhận phòng (check_in hoặc checkIn) là bắt buộc, định dạng YYYY-MM-DD');
+      }
+      return true;
+    }),
 
   body('check_out')
-    .notEmpty().withMessage('Ngày trả phòng (check_out) là bắt buộc')
-    .matches(/^\d{4}-\d{2}-\d{2}$/).withMessage('check_out phải có định dạng YYYY-MM-DD'),
+    .custom((val, { req }) => {
+      const date = val || req.body.checkOut;
+      if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        throw new Error('Ngày trả phòng (check_out hoặc checkOut) là bắt buộc, định dạng YYYY-MM-DD');
+      }
+      return true;
+    }),
 
   body('guests')
     .notEmpty().withMessage('Số lượng khách (guests) là bắt buộc')
