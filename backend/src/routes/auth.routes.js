@@ -15,3 +15,4 @@ router.post('/login', loginValidator, validateRequest, AuthController.login);
 router.get('/me', verifyJWT, AuthController.getMe);
 
 module.exports = router;
+

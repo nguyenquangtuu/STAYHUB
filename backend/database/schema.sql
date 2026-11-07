@@ -95,3 +95,4 @@ CREATE TABLE `reviews` (
   CONSTRAINT `fk_reviews_homestay` FOREIGN KEY (`homestay_id`) REFERENCES `homestays` (`id`) ON DELETE CASCADE,
   INDEX `idx_reviews_homestay_id` (`homestay_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

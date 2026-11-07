@@ -58,3 +58,4 @@ module.exports = {
   createRoomValidator,
   updateRoomValidator
 };
+

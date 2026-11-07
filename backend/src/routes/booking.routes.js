@@ -34,3 +34,4 @@ router.patch(
 router.get('/:id', verifyJWT, BookingController.getById);
 
 module.exports = router;
+

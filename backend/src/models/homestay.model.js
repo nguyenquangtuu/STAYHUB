@@ -215,3 +215,4 @@ class HomestayModel {
 }
 
 module.exports = HomestayModel;
+

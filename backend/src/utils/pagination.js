@@ -37,3 +37,4 @@ module.exports = {
   getPaginationParams,
   buildPaginationMeta
 };
+

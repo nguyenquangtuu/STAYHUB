@@ -61,3 +61,4 @@ INSERT INTO `bookings` (`id`, `user_id`, `room_id`, `check_in`, `check_out`, `gu
 -- 5. TẠO REVIEW MẪU CHO BOOKING ĐÃ HOÀN THÀNH
 INSERT INTO `reviews` (`id`, `booking_id`, `user_id`, `homestay_id`, `rating`, `comment`) VALUES
 (1, 1, 2, 1, 5, 'Phòng ốc sạch sẽ, vị trí ngay phố cổ rất thuận tiện đi dạo hồ Gươm. Chủ nhà hỗ trợ cực kỳ nhiệt tình!');
+

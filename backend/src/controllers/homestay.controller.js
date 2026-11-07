@@ -67,3 +67,4 @@ class HomestayController {
 }
 
 module.exports = HomestayController;
+
