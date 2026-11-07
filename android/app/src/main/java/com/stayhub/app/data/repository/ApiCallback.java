@@ -8,3 +8,4 @@ public interface ApiCallback<T> {
     void onSuccess(T data, String message);
     void onError(String errorMessage);
 }
+

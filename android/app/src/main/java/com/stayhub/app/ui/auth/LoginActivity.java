@@ -116,3 +116,4 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLogin.setText(isLoading ? "" : getString(R.string.login_button));
     }
 }
+

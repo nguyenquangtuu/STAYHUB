@@ -184,3 +184,4 @@ Mật khẩu mặc định cho tất cả tài khoản là: **123456**
 | `admin@stayhub.com` | `123456` | Admin Quản Trị Viên | Quản trị viên hệ thống |
 
 Bạn cũng có thể tự do bấm nút **Đăng ký ngay** trên ứng dụng để tạo tài khoản mới.
+

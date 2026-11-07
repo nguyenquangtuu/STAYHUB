@@ -118,3 +118,4 @@ public class WriteReviewActivity extends AppCompatActivity {
         binding.btnSubmitReview.setText(isLoading ? "" : getString(R.string.btn_submit_review));
     }
 }
+

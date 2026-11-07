@@ -97,3 +97,4 @@ public interface ApiService {
             @Query("limit") Integer limit
     );
 }
+

@@ -85,3 +85,4 @@ public class AvailabilityResponse {
         this.totalPrice = totalPrice;
     }
 }
+

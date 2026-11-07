@@ -221,3 +221,4 @@ public class MyBookingsFragment extends Fragment {
         binding = null;
     }
 }
+

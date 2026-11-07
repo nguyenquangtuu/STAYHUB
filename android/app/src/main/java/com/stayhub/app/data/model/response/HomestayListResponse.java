@@ -32,3 +32,4 @@ public class HomestayListResponse {
         this.pagination = pagination;
     }
 }
+

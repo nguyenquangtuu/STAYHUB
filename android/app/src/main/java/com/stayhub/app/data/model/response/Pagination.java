@@ -51,3 +51,4 @@ public class Pagination {
         this.totalPages = totalPages;
     }
 }
+

@@ -70,3 +70,4 @@ public class BookingRequest {
         this.note = note;
     }
 }
+

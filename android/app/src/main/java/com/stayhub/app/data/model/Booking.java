@@ -236,3 +236,4 @@ public class Booking implements Serializable {
                 || Constants.STATUS_CONFIRMED.equalsIgnoreCase(status);
     }
 }
+

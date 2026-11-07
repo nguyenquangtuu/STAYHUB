@@ -92,3 +92,4 @@ public class Room implements Serializable {
         return "available".equalsIgnoreCase(status);
     }
 }
+

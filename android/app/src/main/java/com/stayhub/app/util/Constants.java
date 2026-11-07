@@ -39,3 +39,4 @@ public final class Constants {
     public static final String STATUS_CANCELLED = "CANCELLED";
     public static final String STATUS_REJECTED = "REJECTED";
 }
+

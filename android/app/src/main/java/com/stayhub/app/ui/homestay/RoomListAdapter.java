@@ -102,3 +102,4 @@ public class RoomListAdapter extends RecyclerView.Adapter<RoomListAdapter.RoomVi
         }
     }
 }
+

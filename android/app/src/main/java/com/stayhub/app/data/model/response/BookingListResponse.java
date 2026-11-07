@@ -32,3 +32,4 @@ public class BookingListResponse {
         this.pagination = pagination;
     }
 }
+

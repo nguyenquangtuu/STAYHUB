@@ -13,3 +13,4 @@
         android:icon="@drawable/ic_person"
         android:title="@string/nav_profile" />
 </menu>
+

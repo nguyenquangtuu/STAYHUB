@@ -42,3 +42,4 @@ public abstract class BaseRepository {
         return "Lỗi máy chủ (HTTP " + response.code() + ")";
     }
 }
+

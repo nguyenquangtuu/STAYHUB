@@ -78,3 +78,4 @@ public class User implements Serializable {
         return "admin".equalsIgnoreCase(role);
     }
 }
+

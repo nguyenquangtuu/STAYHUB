@@ -62,3 +62,4 @@ public class UiState<T> {
         return status == Status.ERROR;
     }
 }
+

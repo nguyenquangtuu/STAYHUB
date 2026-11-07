@@ -118,3 +118,4 @@ public class RegisterActivity extends AppCompatActivity {
         binding.btnRegister.setText(isLoading ? "" : getString(R.string.register_button));
     }
 }
+
