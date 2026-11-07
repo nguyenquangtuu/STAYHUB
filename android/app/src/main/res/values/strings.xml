@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App info -->
+    <string name="app_name">StayHub</string>
+    <string name="app_slogan">Tìm và đặt phòng homestay nghỉ dưỡng tuyệt vời</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Khám phá</string>
+    <string name="nav_bookings">Đơn đặt</string>
+    <string name="nav_profile">Tài khoản</string>
+
+    <!-- Auth -->
+    <string name="login_title">Chào mừng trở lại!</string>
+    <string name="login_subtitle">Đăng nhập để khám phá các homestay đẹp nhất</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="register_title">Tạo tài khoản mới</string>
+    <string name="register_subtitle">Gia nhập cộng đồng du lịch StayHub ngay hôm nay</string>
+    <string name="register_button">Đăng ký tài khoản</string>
+    <string name="dont_have_account">Chưa có tài khoản? Đăng ký ngay</string>
+    <string name="already_have_account">Đã có tài khoản? Đăng nhập</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Mật khẩu</string>
+    <string name="label_full_name">Họ và tên</string>
+    <string name="label_phone">Số điện thoại</string>
+    <string name="hint_email">example@gmail.com</string>
+    <string name="hint_password">Tối thiểu 6 ký tự</string>
+    <string name="hint_full_name">Nguyễn Văn A</string>
+    <string name="hint_phone">0901234567</string>
+    <string name="error_invalid_email">Địa chỉ email không hợp lệ</string>
+    <string name="error_short_password">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="error_empty_name">Vui lòng nhập họ và tên</string>
+    <string name="error_empty_fields">Vui lòng điền đầy đủ các thông tin bắt buộc</string>
+
+    <!-- Home & Filter -->
+    <string name="home_search_hint">Nhập thành phố (Hà Nội, Đà Lạt...)</string>
+    <string name="filter_button">Lọc phòng</string>
+    <string name="filter_reset">Đặt lại</string>
+    <string name="filter_max_price">Giá tối đa: %s</string>
+    <string name="price_range_format">Chỉ từ %s / đêm</string>
+    <string name="empty_homestays">Không tìm thấy homestay nào phù hợp tiêu chí</string>
+    <string name="rooms_available_count">%d phòng</string>
+    <string name="rating_format">%.1f</string>
+    <string name="rating_count">(%d đánh giá)</string>
+
+    <!-- Homestay Detail -->
+    <string name="homestay_detail_title">Chi tiết homestay</string>
+    <string name="section_description">Giới thiệu</string>
+    <string name="section_amenities">Tiện ích nổi bật</string>
+    <string name="section_rooms">Danh sách phòng</string>
+    <string name="section_reviews">Đánh giá từ khách hàng</string>
+    <string name="no_rooms_available">Hiện chưa có phòng nào khả dụng</string>
+    <string name="no_reviews">Chưa có đánh giá nào cho homestay này</string>
+    <string name="room_capacity">Tối đa %d khách</string>
+    <string name="room_bed_type">Giường: %s</string>
+    <string name="btn_book_room">Đặt phòng này</string>
+    <string name="status_room_available">Sẵn sàng đón khách</string>
+    <string name="status_room_maintenance">Đang bảo trì</string>
+
+    <!-- Booking Activity -->
+    <string name="booking_title">Xác nhận đặt phòng</string>
+    <string name="label_check_in">Ngày nhận phòng (Check-in)</string>
+    <string name="label_check_out">Ngày trả phòng (Check-out)</string>
+    <string name="label_guests">Số lượng khách</string>
+    <string name="label_note">Ghi chú đặc biệt (Tùy chọn)</string>
+    <string name="hint_note">Ví dụ: Yêu cầu phòng tầng cao, check in muộn...</string>
+    <string name="btn_confirm_booking">Xác nhận đặt phòng</string>
+    <string name="check_availability_checking">Đang kiểm tra phòng trống...</string>
+    <string name="room_is_available">✓ Phòng còn trống và sẵn sàng phục vụ</string>
+    <string name="room_not_available">✕ Phòng không trống trong khoảng thời gian này</string>
+    <string name="nights_count">%d đêm</string>
+    <string name="total_price_label">Tổng cộng:</string>
+    <string name="error_invalid_dates">Ngày trả phòng phải sau ngày nhận phòng</string>
+    <string name="error_checkin_past">Ngày nhận phòng không được ở quá khứ</string>
+    <string name="error_exceed_capacity">Số khách vượt quá sức chứa tối đa (%d khách)</string>
+
+    <!-- My Bookings -->
+    <string name="tab_active_bookings">Đang đặt</string>
+    <string name="tab_booking_history">Lịch sử</string>
+    <string name="empty_active_bookings">Bạn chưa có đơn đặt phòng nào đang hiệu lực</string>
+    <string name="empty_history_bookings">Bạn chưa có lịch sử đặt phòng nào</string>
+    <string name="btn_cancel_booking">Hủy đơn</string>
+    <string name="btn_write_review">Đánh giá</string>
+    <string name="confirm_cancel_title">Xác nhận hủy đặt phòng</string>
+    <string name="confirm_cancel_message">Bạn có chắc chắn muốn hủy đơn đặt phòng này không? Hành động này không thể hoàn tác.</string>
+    <string name="action_yes">Đồng ý</string>
+    <string name="action_no">Không</string>
+    <string name="booking_dates_format">%1$s - %2$s (%3$d đêm)</string>
+    <string name="booking_code">Mã đơn: #%d</string>
+
+    <!-- Booking Status Labels -->
+    <string name="status_pending_label">Chờ xác nhận</string>
+    <string name="status_confirmed_label">Đã xác nhận</string>
+    <string name="status_completed_label">Đã hoàn thành</string>
+    <string name="status_cancelled_label">Đã hủy</string>
+    <string name="status_rejected_label">Bị từ chối</string>
+
+    <!-- Write Review -->
+    <string name="review_title">Đánh giá trải nghiệm</string>
+    <string name="review_prompt">Hãy chia sẻ cảm nhận của bạn về kỳ nghỉ này</string>
+    <string name="label_comment">Nội dung đánh giá</string>
+    <string name="hint_comment">Chia sẻ về không gian, độ sạch sẽ, thái độ chủ nhà...</string>
+    <string name="btn_submit_review">Gửi đánh giá</string>
+    <string name="error_empty_comment">Vui lòng viết vài dòng cảm nhận</string>
+    <string name="review_success">Cảm ơn bạn đã gửi đánh giá!</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Hồ sơ cá nhân</string>
+    <string name="btn_logout">Đăng xuất</string>
+    <string name="confirm_logout_title">Đăng xuất</string>
+    <string name="confirm_logout_message">Bạn có chắc chắn muốn đăng xuất khỏi ứng dụng không?</string>
+    <string name="role_customer">Khách hàng</string>
+    <string name="role_admin">Quản trị viên</string>
+
+    <!-- General / States -->
+    <string name="loading">Đang tải dữ liệu...</string>
+    <string name="error_network">Không thể kết nối tới máy chủ. Vui lòng kiểm tra mạng</string>
+    <string name="error_session_expired">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại</string>
+    <string name="retry">Thử lại</string>
+</resources>

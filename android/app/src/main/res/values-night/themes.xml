@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Dark Mode Application Theme -->
+    <style name="Theme.StayHub" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary Brand Colors -->
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+
+        <!-- Secondary (Accent) Colors -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">#121824</item>
+        <item name="colorSurface">#1A2232</item>
+        <item name="colorSurfaceVariant">#243046</item>
+        <item name="colorOutline">#3B4E6B</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">#0F1520</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#1A2232</item>
+
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.StayHub.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.StayHub.LargeComponent</item>
+        <item name="materialCardViewStyle">@style/Widget.StayHub.CardView</item>
+    </style>
+</resources>

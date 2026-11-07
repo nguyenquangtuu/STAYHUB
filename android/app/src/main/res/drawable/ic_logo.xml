@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+  <!-- House base in primary navy -->
+  <path
+      android:fillColor="@color/primary"
+      android:pathData="M50,15 L15,45 L25,45 L25,85 L75,85 L75,45 L85,45 Z"/>
+  <!-- Roof accent line in secondary orange -->
+  <path
+      android:fillColor="@color/secondary"
+      android:pathData="M50,10 L10,44 L16,49 L50,20 L84,49 L90,44 Z"/>
+  <!-- Door / Keyhole opening -->
+  <path
+      android:fillColor="@color/surface"
+      android:pathData="M42,85 L42,55 C42,50.5 45.5,47 50,47 C54.5,47 58,50.5 58,55 L58,85 Z"/>
+</vector>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Palette: Navy Blue (#1E3A5F) + Accent Orange (#FF8A3D) -->
+    <color name="primary">#1E3A5F</color>
+    <color name="primary_dark">#13243B</color>
+    <color name="primary_light">#2E568A</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#D9E4F2</color>
+    <color name="on_primary_container">#0D1C30</color>
+
+    <color name="secondary">#FF8A3D</color>
+    <color name="secondary_dark">#D96E24</color>
+    <color name="secondary_light">#FFA76C</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#FFE3D1</color>
+    <color name="on_secondary_container">#4E2300</color>
+
+    <!-- Neutral & Backgrounds -->
+    <color name="background">#F8F9FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#EEF2F6</color>
+    <color name="outline">#CBD5E1</color>
+    <color name="divider">#E2E8F0</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="text_on_dark">#FFFFFF</color>
+
+    <!-- Booking Status Colors -->
+    <color name="status_pending">#F59E0B</color>
+    <color name="status_pending_bg">#FEF3C7</color>
+    <color name="status_confirmed">#2563EB</color>
+    <color name="status_confirmed_bg">#DBEAFE</color>
+    <color name="status_completed">#10B981</color>
+    <color name="status_completed_bg">#D1FAE5</color>
+    <color name="status_cancelled">#EF4444</color>
+    <color name="status_cancelled_bg">#FEE2E2</color>
+    <color name="status_rejected">#6B7280</color>
+    <color name="status_rejected_bg">#F3F4F6</color>
+
+    <!-- Rating & Alerts -->
+    <color name="rating_star">#FBBF24</color>
+    <color name="error">#DC2626</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="success">#16A34A</color>
+    <color name="on_success">#FFFFFF</color>
+    <color name="chip_background">#E2E8F0</color>
+    <color name="shimmer_color">#E0E0E0</color>
+</resources>
