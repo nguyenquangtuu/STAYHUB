@@ -73,7 +73,6 @@ backend/
 │   ├── initDb.js                # Script tự động đọc cấu hình từ .env để tạo DB và import SQL
 │   ├── schema.sql               # Kịch bản tạo Database, Tables 3NF, Foreign Keys & Indexes
 │   └── seed.sql                 # Dữ liệu mẫu (1 Admin, 2 User, 3 Homestay, 6 Room)
-├── test.http                    # Bộ kịch bản kiểm thử API đầy đủ cho REST Client
 ├── .env.example                 # Mẫu cấu hình biến môi trường
 ├── .gitignore
 ├── package.json
@@ -245,13 +244,31 @@ WHERE id = ?;
 
 ---
 
-## 7. HƯỚNG DẪN TEST API BẰNG FILE test.http
+## 7. HƯỚNG DẪN KIỂM THỬ API (POSTMAN / CURL)
 
-Dự án đã tích hợp sẵn bộ kiểm thử toàn diện trong file backend/test.http.
-Cách sử dụng:
-1. Cài đặt tiện ích mở rộng REST Client trên VS Code (của Huachao Mao).
-2. Mở file backend/test.http.
-3. Nhấn chuột vào nút "Send Request" nằm ngay phía trên từng dòng request để thực thi:
-   - Chạy request 2.2 Đăng nhập User để token tự động được lưu vào biến @userToken.
-   - Chạy request 2.3 Đăng nhập Admin để token tự động được lưu vào biến @adminToken.
-   - Thực hiện test đặt phòng, kiểm tra trùng lịch (nhận 409 Conflict), test hủy phòng và gửi đánh giá.
+Có thể kiểm thử nhanh các API thông qua Postman hoặc lệnh cURL trên Terminal:
+
+### 7.1 Kiểm tra trạng thái hệ thống (Health Check)
+```bash
+curl -X GET http://localhost:5000/api/health
+```
+
+### 7.2 Đăng nhập lấy Token
+```bash
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"khachhang1@gmail.com","password":"password123"}'
+```
+
+### 7.3 Xem danh sách Homestay kèm bộ lọc
+```bash
+curl -X GET "http://localhost:5000/api/homestays?city=Da%20Lat&minPrice=400000&maxPrice=1000000"
+```
+
+### 7.4 Đặt phòng (Yêu cầu Bearer Token)
+```bash
+curl -X POST http://localhost:5000/api/bookings \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN_CUA_BAN>" \
+  -d '{"room_id":1,"check_in":"2026-11-15","check_out":"2026-11-18","guests":2,"note":"Phong yen tinh"}'
+```

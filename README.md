@@ -15,4 +15,4 @@ npm run db:init
 npm run dev
 ```
 
-Kiểm tra API: mở file backend/test.http trên VS Code (sử dụng tiện ích mở rộng REST Client).
+Kiểm tra API: Xem chi tiết hướng dẫn và ví dụ gọi API tại backend/README.md.
