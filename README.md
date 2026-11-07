@@ -1,11 +1,11 @@
-# STAYHUB - UNG DUNG DAT PHONG HOMESTAY
+# STAYHUB - ỨNG DỤNG ĐẶT PHÒNG HOMESTAY
 
-He thong dat phong Homestay nghi duong STAYHUB (Do an cuoi ky mon Lap trinh Ung dung).
+Hệ thống đặt phòng Homestay nghỉ dưỡng STAYHUB (Đồ án cuối kỳ môn Lập trình Ứng dụng).
 
-- Backend API: Node.js + Express.js + MySQL (Xem chi tiet tai backend/README.md)
-- Kho luu tru GitHub: https://github.com/nguyenquangtuu/STAYHUB.git
+- Backend API: Node.js + Express.js + MySQL (Xem chi tiết tại backend/README.md)
+- Kho lưu trữ GitHub: https://github.com/nguyenquangtuu/STAYHUB.git
 
-## Khoi dong nhanh Backend
+## Khởi động nhanh Backend
 
 ```bash
 cd backend
@@ -15,4 +15,4 @@ npm run db:init
 npm run dev
 ```
 
-Kiem tra API: mo file backend/test.http tren VS Code (su dung tien ich REST Client).
+Kiểm tra API: mở file backend/test.http trên VS Code (sử dụng tiện ích mở rộng REST Client).

@@ -1,7 +1,7 @@
 {
   "name": "stayhub-backend",
   "version": "1.0.0",
-  "description": "Backend API cho ung dung dat phong Homestay STAYHUB (NodeJS + MySQL)",
+  "description": "Backend API cho ứng dụng đặt phòng Homestay STAYHUB (NodeJS + MySQL)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -1,212 +1,212 @@
 # STAYHUB - BACKEND RESTFUL API
 
-He thong Backend API cho ung dung dat phong Homestay nghi duong STAYHUB, duoc xay dung bang NodeJS + Express + MySQL theo mo hinh kien truc phan lop chuan cong nghiep (3-Tier Architecture), toi uu hoa hieu nang, xu ly dong thoi (Concurrency Control) va dam bao cac tieu chuan do an tot nghiep / do an chuyen nganh CNTT.
+Hệ thống Backend API cho ứng dụng đặt phòng Homestay nghỉ dưỡng STAYHUB, được xây dựng bằng NodeJS + Express + MySQL theo mô hình kiến trúc phân lớp chuẩn công nghiệp (3-Tier Architecture), tối ưu hóa hiệu năng, xử lý đồng thời (Concurrency Control) và đáp ứng đầy đủ các tiêu chuẩn đồ án tốt nghiệp, đồ án chuyên ngành CNTT.
 
 ---
 
-## 1. TECH STACK VA QUY UOC CONG NGHE
+## 1. TECH STACK VÀ QUY ƯỚC CÔNG NGHỆ
 
-- Runtime va Ngon ngu: Node.js v18+ (CommonJS)
+- Runtime và Ngôn ngữ: Node.js v18+ (CommonJS)
 - Web Framework: Express.js
-- He quan tri CSDL: MySQL 8.0+ / MariaDB
-- Database Driver: mysql2/promise (Su dung Connection Pool, Raw SQL voi Prepared Statements de toi uu hieu nang va chong SQL Injection, khong dung ORM)
-- Bao mat:
-  - bcryptjs: Bam mat khau (10 salt rounds)
-  - jsonwebtoken (JWT): Xac thuc phien lam viec Stateless
-  - helmet: Tang cuong bao mat HTTP Headers
-  - cors: Cau hinh chia se tai nguyen nguon goc cheo
-- Kiem tra du lieu dau vao: express-validator
+- Hệ quản trị CSDL: MySQL 8.0+ / MariaDB
+- Database Driver: mysql2/promise (Sử dụng Connection Pool, Raw SQL với Prepared Statements để tối ưu hiệu năng và phòng chống SQL Injection, không dùng ORM)
+- Bảo mật:
+  - bcryptjs: Băm mật khẩu (10 salt rounds)
+  - jsonwebtoken (JWT): Xác thực phiên làm việc Stateless
+  - helmet: Tăng cường bảo mật HTTP Headers
+  - cors: Cấu hình chia sẻ tài nguyên nguồn gốc chéo
+- Kiểm tra dữ liệu đầu vào: express-validator
 - Logging: morgan
 
 ---
 
-## 2. CAU TRUC THU MUC DU AN
+## 2. CẤU TRÚC THƯ MỤC DỰ ÁN
 
 ```
 backend/
 ├── src/
 │   ├── config/
-│   │   ├── database.js          # Khoi tao MySQL Connection Pool va kiem tra ket noi
-│   │   └── env.js               # Load va kiem soat bien moi truong tu file .env
-│   ├── models/                  # Tang thao tac CSDL thuan (Raw SQL Prepared Statements)
+│   │   ├── database.js          # Khởi tạo MySQL Connection Pool và kiểm tra kết nối
+│   │   └── env.js               # Load và kiểm soát biến môi trường từ file .env
+│   ├── models/                  # Tầng thao tác CSDL thuần (Raw SQL Prepared Statements)
 │   │   ├── user.model.js
-│   │   ├── homestay.model.js    # Tim kiem dong (city, price, capacity, amenities)
+│   │   ├── homestay.model.js    # Tìm kiếm động (thành phố, giá, số khách, tiện ích)
 │   │   ├── room.model.js
-│   │   ├── booking.model.js     # Query kiem tra trung lich va khoa dong FOR UPDATE
-│   │   └── review.model.js      # Luu review va tinh lai avg_rating
-│   ├── controllers/             # Tiep nhan request HTTP, goi service va tra response
+│   │   ├── booking.model.js     # Query kiểm tra trùng lịch và khóa dòng FOR UPDATE
+│   │   └── review.model.js      # Lưu review và tính lại điểm avg_rating
+│   ├── controllers/             # Tiếp nhận request HTTP, gọi service và trả response
 │   │   ├── auth.controller.js
 │   │   ├── homestay.controller.js
 │   │   ├── room.controller.js
 │   │   ├── booking.controller.js
 │   │   └── review.controller.js
-│   ├── services/                # Tang nghiep vu cot loi (Business Logic & Transactions)
+│   ├── services/                # Tầng nghiệp vụ cốt lõi (Business Logic & Transactions)
 │   │   ├── auth.service.js
 │   │   ├── homestay.service.js
 │   │   ├── room.service.js
-│   │   ├── booking.service.js   # ACID Transaction dat phong, huy phong >= 24h
-│   │   └── review.service.js    # Kiem tra booking COMPLETED va cap nhat avg_rating
-│   ├── routes/                  # Dinh nghia endpoints va gan middlewares
-│   │   ├── index.js             # Gom cum tat ca route ve tien to /api
+│   │   ├── booking.service.js   # ACID Transaction đặt phòng, hủy phòng >= 24h
+│   │   └── review.service.js    # Kiểm tra booking COMPLETED và cập nhật avg_rating
+│   ├── routes/                  # Định nghĩa endpoints và gắn middlewares
+│   │   ├── index.js             # Gom cụm tất cả route về tiền tố /api
 │   │   ├── auth.routes.js
 │   │   ├── homestay.routes.js
 │   │   ├── room.routes.js
 │   │   ├── booking.routes.js
 │   │   └── review.routes.js
-│   ├── middlewares/             # Cac bo loc trung gian
+│   ├── middlewares/             # Các bộ lọc trung gian
 │   │   ├── auth.middleware.js   # verifyJWT, requireRole('user', 'admin')
-│   │   ├── validate.middleware.js # Bat loi tu express-validator
-│   │   └── error.middleware.js  # Global Error Handler chuan hoa loi
-│   ├── validators/              # Dinh nghia quy tac validate body/param/query
+│   │   ├── validate.middleware.js # Bắt lỗi từ express-validator
+│   │   └── error.middleware.js  # Global Error Handler chuẩn hóa lỗi
+│   ├── validators/              # Định nghĩa quy tắc validate body/param/query
 │   │   ├── auth.validator.js
 │   │   ├── homestay.validator.js
 │   │   ├── room.validator.js
 │   │   ├── booking.validator.js
 │   │   └── review.validator.js
-│   ├── utils/                   # Ham tien ich dung chung
-│   │   ├── response.js          # Format JSON response thong nhat
-│   │   ├── ApiError.js          # Custom Error Class chuan HTTP status
-│   │   ├── dateHelper.js        # Tinh so dem, kiem tra dieu kien huy 24h
-│   │   └── pagination.js        # Helper phan trang chuan
-│   └── app.js                   # Cau hinh Express App
+│   ├── utils/                   # Hàm tiện ích dùng chung
+│   │   ├── response.js          # Format JSON response thống nhất
+│   │   ├── ApiError.js          # Custom Error Class chuẩn HTTP status
+│   │   ├── dateHelper.js        # Tính số đêm, kiểm tra điều kiện hủy 24h
+│   │   └── pagination.js        # Helper phân trang chuẩn
+│   └── app.js                   # Cấu hình Express App
 ├── database/
-│   ├── initDb.js                # Script tu dong doc cau hinh tu .env de tao DB va import SQL
-│   ├── schema.sql               # Kich ban tao Database, Tables 3NF, Foreign Keys & Indexes
-│   └── seed.sql                 # Du lieu mau (1 Admin, 2 User, 3 Homestay, 6 Room)
-├── test.http                    # Bo kich ban kiem thu API day du cho REST Client
-├── .env.example                 # Mau cau hinh bien moi truong
+│   ├── initDb.js                # Script tự động đọc cấu hình từ .env để tạo DB và import SQL
+│   ├── schema.sql               # Kịch bản tạo Database, Tables 3NF, Foreign Keys & Indexes
+│   └── seed.sql                 # Dữ liệu mẫu (1 Admin, 2 User, 3 Homestay, 6 Room)
+├── test.http                    # Bộ kịch bản kiểm thử API đầy đủ cho REST Client
+├── .env.example                 # Mẫu cấu hình biến môi trường
 ├── .gitignore
 ├── package.json
-├── server.js                    # File khoi dong Server
+├── server.js                    # File khởi động Server
 └── README.md
 ```
 
 ---
 
-## 3. HUONG DAN CAI DAT VA KHOI CHAY
+## 3. HƯỚNG DẪN CÀI ĐẶT VÀ KHỞI CHẠY
 
-### Buoc 1: Cai dat Dependencies
-Di chuyen vao thu muc backend va chay lenh:
+### Bước 1: Cài đặt Dependencies
+Di chuyển vào thư mục backend và chạy lệnh:
 ```bash
 cd backend
 npm install
 ```
 
-### Buoc 2: Cau hinh bien moi truong (.env)
-Toan bo thong tin ket noi CSDL duoc dat trong file `.env` nam ben trong thu muc `backend/`.
-Tao file `backend/.env` tu `backend/.env.example`:
+### Bước 2: Cấu hình biến môi trường (.env)
+Toàn bộ thông tin cấu hình kết nối CSDL được đặt tập trung trong file `.env` nằm bên trong thư mục `backend/`.
+Tạo file `backend/.env` từ file `backend/.env.example`:
 ```bash
 cp .env.example .env
 ```
-Noi dung file `backend/.env`:
+Nội dung file `backend/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
 
-# Cau hinh ket noi MySQL Database
+# Cấu hình kết nối MySQL Database
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=stayhub_db
 
-# Cau hinh JWT
+# Cấu hình JWT
 JWT_SECRET=stayhub_super_secret_jwt_key_2026
 JWT_EXPIRES_IN=7d
 ```
 
-### Buoc 3: Khoi tao Co so du lieu tu file .env
-He thong ho tro script tu dong doc truc tiep cac bien `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` tu file `.env` de tao database va nap du lieu mau:
+### Bước 3: Khởi tạo Cơ sở dữ liệu tự động từ file .env
+Hệ thống cung cấp script đọc trực tiếp các biến `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` từ file `.env` để tạo database và nạp dữ liệu mẫu một cách tự động:
 ```bash
 npm run db:init
 ```
-Neu muon chay thu cong qua MySQL CLI hoac phpMyAdmin:
+Nếu muốn chạy thủ công bằng MySQL CLI hoặc phpMyAdmin:
 ```bash
 mysql -u root -p < database/schema.sql
 mysql -u root -p < database/seed.sql
 ```
 
-### Buoc 4: Khoi dong Server
-- Chay moi truong phat trien (tu reload khi sua code voi nodemon):
+### Bước 4: Khởi động Server
+- Chạy môi trường phát triển (tự động reload khi sửa code bằng nodemon):
   ```bash
   npm run dev
   ```
-- Hoac chay moi truong Production:
+- Hoặc chạy môi trường Production:
   ```bash
   npm start
   ```
 
-Server se lang nghe tai: `http://localhost:5000`  
-Endpoint kiem tra suc khoe: `http://localhost:5000/api/health`
+Server sẽ lắng nghe tại: `http://localhost:5000`  
+Endpoint kiểm tra sức khỏe hệ thống: `http://localhost:5000/api/health`
 
 ---
 
-## 4. TAI KHOAN MAU CO SAN TRONG DATABASE
+## 4. TÀI KHOẢN MẪU CÓ SẴN TRONG DATABASE
 
-Mat khau mac dinh cho tat ca tai khoan mau la: **123456**
+Mật khẩu mặc định cho tất cả tài khoản mẫu là: **123456**
 
-| Vai tro (Role) | Ho va ten | Email | Mat khau |
+| Vai trò (Role) | Họ và tên | Email | Mật khẩu |
 | :--- | :--- | :--- | :--- |
-| admin | Admin Quan Tri Vien | admin@stayhub.com | 123456 |
-| user | Nguyen Van Khach | khachhang1@gmail.com | 123456 |
-| user | Tran Thi Thu Thao | khachhang2@gmail.com | 123456 |
+| admin | Admin Quản Trị Viên | admin@stayhub.com | 123456 |
+| user | Nguyễn Văn Khách | khachhang1@gmail.com | 123456 |
+| user | Trần Thị Thu Thảo | khachhang2@gmail.com | 123456 |
 
 ---
 
-## 5. DANH SACH API ENDPOINTS
+## 5. DANH SÁCH API ENDPOINTS
 
 ### 5.1 AUTHENTICATION
-| Method | Endpoint | Quyen | Mo ta |
+| Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| POST | /api/auth/register | Public | Dang ky tai khoan moi (user hoac admin) |
-| POST | /api/auth/login | Public | Dang nhap he thong, tra ve JWT Token |
-| GET | /api/auth/me | user / admin | Lay thong tin tai khoan hien tai |
+| POST | /api/auth/register | Public | Đăng ký tài khoản mới (user hoặc admin) |
+| POST | /api/auth/login | Public | Đăng nhập hệ thống, trả về JWT Token |
+| GET | /api/auth/me | user / admin | Lấy thông tin tài khoản đang đăng nhập |
 
 ### 5.2 HOMESTAY
-| Method | Endpoint | Quyen | Mo ta |
+| Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| GET | /api/homestays | Public | Xem danh sach homestay. Ho tro query params: city, minPrice, maxPrice, guests, amenities, page, limit |
-| GET | /api/homestays/:id | Public | Chi tiet homestay kem danh sach phong |
-| POST | /api/homestays | admin | Tao homestay moi |
-| PUT | /api/homestays/:id | admin | Cap nhat thong tin homestay (chu so huu hoac admin) |
-| DELETE | /api/homestays/:id | admin | Xoa homestay |
+| GET | /api/homestays | Public | Xem danh sách homestay. Hỗ trợ bộ lọc: city, minPrice, maxPrice, guests, amenities, page, limit |
+| GET | /api/homestays/:id | Public | Xem chi tiết homestay kèm danh sách phòng |
+| POST | /api/homestays | admin | Tạo homestay mới |
+| PUT | /api/homestays/:id | admin | Cập nhật thông tin homestay (chủ sở hữu hoặc admin) |
+| DELETE | /api/homestays/:id | admin | Xóa homestay |
 
 ### 5.3 ROOM
-| Method | Endpoint | Quyen | Mo ta |
+| Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| GET | /api/homestays/:id/rooms | Public | Lay danh sach phong thuoc mot homestay |
-| GET | /api/rooms/:id | Public | Xem thong tin chi tiet mot phong |
-| GET | /api/rooms/:id/availability | Public | Kiem tra phong trong (?checkIn=YYYY-MM-DD&checkOut=YYYY-MM-DD) |
-| POST | /api/homestays/:id/rooms | admin | Them phong moi vao homestay |
-| PUT | /api/rooms/:id | admin | Cap nhat thong tin phong |
-| DELETE | /api/rooms/:id | admin | Xoa phong |
+| GET | /api/homestays/:id/rooms | Public | Lấy danh sách phòng thuộc một homestay |
+| GET | /api/rooms/:id | Public | Xem thông tin chi tiết một phòng |
+| GET | /api/rooms/:id/availability | Public | Kiểm tra phòng còn trống hay không (?checkIn=YYYY-MM-DD&checkOut=YYYY-MM-DD) |
+| POST | /api/homestays/:id/rooms | admin | Thêm phòng mới vào homestay |
+| PUT | /api/rooms/:id | admin | Cập nhật thông tin phòng |
+| DELETE | /api/rooms/:id | admin | Xóa phòng |
 
 ### 5.4 BOOKING
-| Method | Endpoint | Quyen | Mo ta |
+| Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| POST | /api/bookings | user / admin | Dat phong (tu dong tinh tong tien, trang thai ban dau PENDING) |
-| GET | /api/bookings/my | user / admin | Xem lich su don dat phong cua toi |
-| GET | /api/bookings/:id | auth | Chi tiet mot don dat phong (chu booking hoac admin) |
-| PATCH | /api/bookings/:id/cancel | auth | Huy don dat phong (chi khi PENDING/CONFIRMED va truoc check_in >= 24h) |
-| PATCH | /api/bookings/:id/status | admin | Chuyen trang thai booking: CONFIRMED, REJECTED, COMPLETED |
-| GET | /api/admin/bookings | admin | Quan ly toan bo danh sach booking trong he thong |
+| POST | /api/bookings | user / admin | Đặt phòng (tự động tính tổng tiền, trạng thái ban đầu là PENDING) |
+| GET | /api/bookings/my | user / admin | Xem lịch sử đơn đặt phòng của tôi |
+| GET | /api/bookings/:id | auth | Xem chi tiết một đơn đặt phòng (chủ booking hoặc admin) |
+| PATCH | /api/bookings/:id/cancel | auth | Hủy đơn đặt phòng (chỉ áp dụng khi PENDING/CONFIRMED và trước check_in >= 24h) |
+| PATCH | /api/bookings/:id/status | admin | Chuyển trạng thái booking: CONFIRMED, REJECTED, COMPLETED |
+| GET | /api/admin/bookings | admin | Quản lý toàn bộ danh sách đơn đặt phòng trong hệ thống |
 
 ### 5.5 REVIEW
-| Method | Endpoint | Quyen | Mo ta |
+| Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| POST | /api/reviews | user / admin | Danh gia homestay (chi khi booking da COMPLETED, moi booking review 1 lan) |
-| GET | /api/homestays/:id/reviews | Public | Xem danh sach danh gia cua homestay kem diem avg_rating |
-| DELETE | /api/reviews/:id | admin | Xoa danh gia khong phu hop va tu dong tinh lai avg_rating |
+| POST | /api/reviews | user / admin | Đánh giá homestay (chỉ khi booking đã COMPLETED, mỗi booking được review 1 lần) |
+| GET | /api/homestays/:id/reviews | Public | Xem danh sách đánh giá của homestay kèm điểm trung bình avg_rating |
+| DELETE | /api/reviews/:id | admin | Xóa đánh giá không phù hợp và tự động tính lại điểm avg_rating |
 
 ---
 
-## 6. CAC THUAT TOAN VA LOGIC QUAN TRONG
+## 6. CÁC THUẬT TOÁN VÀ LOGIC QUAN TRỌNG
 
-### 6.1 Logic Kiem Tra Trung Lich (Check Overlap)
-Mot phong bi coi la da co khach dat neu ton tai booking co trang thai IN ('PENDING', 'CONFIRMED') va giao voi khoang thoi gian moi:
-existing.check_in < new.check_out AND existing.check_out > new.check_in
+### 6.1 Logic Kiểm Tra Trùng Lịch (Check Overlap)
+Một phòng bị coi là đã có khách đặt nếu tồn tại booking có trạng thái thuộc danh sách ('PENDING', 'CONFIRMED') và giao thoa với khoảng thời gian mới:
+existing.check_in < new.check_out VÀ existing.check_out > new.check_in
 
-Cau truy van SQL chuan:
+Câu truy vấn SQL chuẩn:
 ```sql
 SELECT 1 FROM bookings 
 WHERE room_id = ? 
@@ -214,26 +214,26 @@ WHERE room_id = ?
   AND check_in < ? AND check_out > ?
 LIMIT 1;
 ```
-(Dau < va > dam bao rang khach tra phong buoi trua ngay D thi khach moi co the nhan phong buoi chieu cung ngay D ma khong bi tinh la trung lich).
+(Dấu nhỏ hơn `<` và lớn hơn `>` đảm bảo rằng khách trả phòng buổi trưa ngày D thì khách mới vẫn có thể nhận phòng vào buổi chiều cùng ngày D mà không bị tính là trùng lịch).
 
-### 6.2 Xu ly Race Condition bang Transaction va Lock
-Khi co 2 nguoi dung cung luc dat 1 phong trong cung mot khoang ngay:
+### 6.2 Xử lý Race Condition bằng Transaction và Khóa Dòng (Lock)
+Khi có 2 người dùng cùng lúc bấm đặt 1 phòng trong cùng một khoảng ngày:
 1. conn.beginTransaction()
-2. Khoa dong phong: SELECT ... FROM rooms WHERE id = ? FOR UPDATE;
-3. Kiem tra trung lich co khoa dong: SELECT ... FROM bookings WHERE ... FOR UPDATE;
-4. Neu phat hien trung: conn.rollback() va tra ve ma loi 409 Conflict.
-5. Neu hop le: INSERT INTO bookings ..., sau do conn.commit().
+2. Khóa dòng phòng: SELECT ... FROM rooms WHERE id = ? FOR UPDATE;
+3. Kiểm tra trùng lịch có khóa dòng: SELECT ... FROM bookings WHERE ... FOR UPDATE;
+4. Nếu phát hiện trùng lịch: conn.rollback() và trả về mã lỗi 409 Conflict.
+5. Nếu phòng còn trống: INSERT INTO bookings ..., sau đó conn.commit().
 
-### 6.3 Quy tac Huy phong
-Khach hang chi duoc phep huy phong khi:
-1. Nguoi gui request chinh la chu cua don dat phong (b.user_id = req.user.id).
-2. Trang thai hien tai cua don la PENDING hoac CONFIRMED.
-3. Thoi diem hien tai phai cach gio nhan phong ngay check_in (mac dinh 14:00) it nhat 24 gio.
+### 6.3 Quy tắc Hủy phòng
+Khách hàng chỉ được phép hủy phòng khi:
+1. Người gửi request chính là chủ của đơn đặt phòng (b.user_id = req.user.id).
+2. Trạng thái hiện tại của đơn là PENDING hoặc CONFIRMED.
+3. Thời điểm hiện tại phải cách giờ nhận phòng ngày check_in (mặc định 14:00) ít nhất 24 giờ.
 
-### 6.4 Danh gia va Tu dong Cap nhat Diem Trung binh (avg_rating)
-- Dieu kien danh gia: Don dat phong phai o trang thai COMPLETED (da hoan thanh chuyen di).
-- Rang buoc toan ven: Bang reviews co rang buoc UNIQUE (booking_id) nen moi don chi duoc danh gia duy nhat 1 lan.
-- Sau khi them hoac xoa danh gia, he thong tu dong cap nhat lai diem trung binh cho Homestay trong cung Transaction:
+### 6.4 Đánh giá và Tự động Cập nhật Điểm Trung bình (avg_rating)
+- Điều kiện đánh giá: Đơn đặt phòng phải ở trạng thái COMPLETED (đã hoàn thành kỳ nghỉ).
+- Ràng buộc toàn vẹn: Bảng reviews có ràng buộc UNIQUE (booking_id) nên mỗi đơn chỉ được đánh giá duy nhất 1 lần.
+- Sau khi thêm hoặc xóa đánh giá, hệ thống tự động cập nhật lại điểm trung bình cho Homestay trong cùng Transaction:
 ```sql
 UPDATE homestays 
 SET avg_rating = COALESCE(
@@ -245,13 +245,13 @@ WHERE id = ?;
 
 ---
 
-## 7. HUONG DAN TEST API BANG FILE test.http
+## 7. HƯỚNG DẪN TEST API BẰNG FILE test.http
 
-Du an da tich hop san bo kiem thu toan dien trong file backend/test.http.
-Cach su dung:
-1. Cai dat tien ich mo rong REST Client tren VS Code (cua Huachao Mao).
-2. Mo file backend/test.http.
-3. Nhan chuot vao nut "Send Request" nam ngay phia tren tung dong request de thuc thi:
-   - Chay request 2.2 Dang nhap User de token tu dong duoc luu vao bien @userToken.
-   - Chay request 2.3 Dang nhap Admin de token tu dong duoc luu vao bien @adminToken.
-   - Thuc hien test dat phong, kiem tra trung lich (nhan 409 Conflict), test huy phong va gui danh gia.
+Dự án đã tích hợp sẵn bộ kiểm thử toàn diện trong file backend/test.http.
+Cách sử dụng:
+1. Cài đặt tiện ích mở rộng REST Client trên VS Code (của Huachao Mao).
+2. Mở file backend/test.http.
+3. Nhấn chuột vào nút "Send Request" nằm ngay phía trên từng dòng request để thực thi:
+   - Chạy request 2.2 Đăng nhập User để token tự động được lưu vào biến @userToken.
+   - Chạy request 2.3 Đăng nhập Admin để token tự động được lưu vào biến @adminToken.
+   - Thực hiện test đặt phòng, kiểm tra trùng lịch (nhận 409 Conflict), test hủy phòng và gửi đánh giá.
