@@ -1,0 +1,238 @@
+### ===================================================================
+### STAYHUB API - TEST SUITE CHO REST CLIENT (VS CODE EXTENSION)
+### ===================================================================
+
+@baseUrl = http://localhost:5000/api
+
+### 1. HEALTH CHECK
+GET {{baseUrl}}/health
+
+
+### ===================================================================
+### 2. AUTHENTICATION & USERS
+### ===================================================================
+
+### 2.1 Đăng ký tài khoản User mới
+# @name registerUser
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "full_name": "Lê Hoàng Nam",
+  "email": "lehoangnam@gmail.com",
+  "password": "password123",
+  "phone": "0987654321",
+  "role": "user"
+}
+
+### 2.2 Đăng nhập với tài khoản User (Lấy Token)
+# @name loginUser
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "khachhang1@gmail.com",
+  "password": "password123"
+}
+
+### Lưu User Token từ response (hoặc điền token thủ công)
+@userToken = {{loginUser.response.body.data.token}}
+
+### 2.3 Đăng nhập với tài khoản Admin (Lấy Token Admin)
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@stayhub.com",
+  "password": "password123"
+}
+
+### Lưu Admin Token từ response
+@adminToken = {{loginAdmin.response.body.data.token}}
+
+### 2.4 Lấy thông tin tài khoản hiện tại (Me)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{userToken}}
+
+
+### ===================================================================
+### 3. HOMESTAY APIS
+### ===================================================================
+
+### 3.1 Xem danh sách tất cả homestay (có phân trang)
+GET {{baseUrl}}/homestays?page=1&limit=10
+
+### 3.2 Lọc homestay theo Thành phố (Hà Nội, Đà Lạt, Đà Nẵng)
+GET {{baseUrl}}/homestays?city=Đà Lạt
+
+### 3.3 Lọc homestay theo khoảng giá và số lượng khách
+GET {{baseUrl}}/homestays?minPrice=400000&maxPrice=1000000&guests=2
+
+### 3.4 Lọc homestay theo tiện ích (amenities: wifi, pool, bbq...)
+GET {{baseUrl}}/homestays?amenities=wifi,pool
+
+### 3.5 Xem chi tiết một homestay kèm danh sách phòng
+GET {{baseUrl}}/homestays/1
+
+### 3.6 Admin tạo mới một Homestay
+POST {{baseUrl}}/homestays
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Nha Trang Sea Breeze Villa",
+  "description": "Biệt thự view biển Trần Phú đẳng cấp, đầy đủ tiện nghi BBQ và hồ bơi",
+  "city": "Nha Trang",
+  "address": "15 Trần Phú, Vĩnh Hòa, Nha Trang, Khánh Hòa",
+  "amenities": ["wifi", "pool", "bbq", "parking", "kitchen"]
+}
+
+### 3.7 Admin cập nhật thông tin Homestay
+PUT {{baseUrl}}/homestays/1
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "An Nam Heritage Villa (Renovated 2026)",
+  "description": "Biệt thự phố cổ Hà Nội vừa được nâng cấp nội thất sang trọng"
+}
+
+### 3.8 Admin xóa Homestay
+# DELETE {{baseUrl}}/homestays/4
+# Authorization: Bearer {{adminToken}}
+
+
+### ===================================================================
+### 4. ROOM APIS
+### ===================================================================
+
+### 4.1 Xem danh sách phòng của một homestay
+GET {{baseUrl}}/homestays/1/rooms
+
+### 4.2 Xem chi tiết phòng theo ID
+GET {{baseUrl}}/rooms/1
+
+### 4.3 Kiểm tra phòng trống (Availability) - Dự kiến: CÒN TRỐNG
+GET {{baseUrl}}/rooms/1/availability?checkIn=2026-11-10&checkOut=2026-11-13
+
+### 4.4 Kiểm tra phòng trống (Availability) - Dự kiến: ĐÃ CÓ KHÁCH (Booking mẫu ID 2 phòng 3: 2026-12-20 đến 2026-12-25)
+GET {{baseUrl}}/rooms/3/availability?checkIn=2026-12-21&checkOut=2026-12-23
+
+### 4.5 Admin thêm phòng mới vào Homestay
+POST {{baseUrl}}/homestays/1/rooms
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Phòng Studio Ban Công Phố Cổ",
+  "price_per_night": 750000,
+  "capacity": 2,
+  "bed_type": "Queen Bed",
+  "status": "available"
+}
+
+### 4.6 Admin cập nhật thông tin phòng
+PUT {{baseUrl}}/rooms/1
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "price_per_night": 680000,
+  "status": "available"
+}
+
+
+### ===================================================================
+### 5. BOOKING APIS
+### ===================================================================
+
+### 5.1 User đặt phòng thành công (Status = PENDING)
+# @name createBooking
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "room_id": 1,
+  "check_in": "2026-11-15",
+  "check_out": "2026-11-18",
+  "guests": 2,
+  "note": "Cần phòng yên tĩnh, check in lúc 15h"
+}
+
+### 5.2 Test chống trùng lịch (Race condition / Overlap) -> KỲ VỌNG: 409 Conflict
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "room_id": 1,
+  "check_in": "2026-11-16",
+  "check_out": "2026-11-19",
+  "guests": 2,
+  "note": "Cố tình đặt trùng ngày với booking phía trên"
+}
+
+### 5.3 Test đặt phòng quá sức chứa -> KỲ VỌNG: 400 Bad Request
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "room_id": 1,
+  "check_in": "2026-11-20",
+  "check_out": "2026-11-22",
+  "guests": 10,
+  "note": "Đặt 10 người cho phòng capacity = 2"
+}
+
+### 5.4 Lấy lịch sử đặt phòng của tôi
+GET {{baseUrl}}/bookings/my?page=1&limit=10
+Authorization: Bearer {{userToken}}
+
+### 5.5 Xem chi tiết một đơn đặt phòng
+GET {{baseUrl}}/bookings/1
+Authorization: Bearer {{userToken}}
+
+### 5.6 Hủy đơn đặt phòng (Trước check_in >= 24h)
+PATCH {{baseUrl}}/bookings/3/cancel
+Authorization: Bearer {{userToken}}
+
+### 5.7 Admin duyệt xác nhận đơn đặt phòng (CONFIRMED / REJECTED / COMPLETED)
+PATCH {{baseUrl}}/bookings/1/status
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "COMPLETED"
+}
+
+### 5.8 Admin xem danh sách tất cả các đơn đặt phòng trong hệ thống
+GET {{baseUrl}}/admin/bookings?page=1&limit=10
+Authorization: Bearer {{adminToken}}
+
+
+### ===================================================================
+### 6. REVIEW APIS
+### ===================================================================
+
+### 6.1 Gửi đánh giá cho đơn đặt phòng đã COMPLETED
+# Lưu ý: Booking ID 1 trong seed data đã có status = COMPLETED (đã được review mẫu).
+# Bạn có thể duyệt một booking mới thành COMPLETED ở bước 5.7 rồi review tại đây:
+POST {{baseUrl}}/reviews
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "booking_id": 1,
+  "rating": 5,
+  "comment": "Chuyến đi thật tuyệt vời! Phòng sạch sẽ, view đẹp đúng như mô tả."
+}
+
+### 6.2 Xem danh sách đánh giá của một Homestay kèm điểm avg_rating
+GET {{baseUrl}}/homestays/1/reviews
+
+### 6.3 Admin xóa đánh giá không phù hợp
+DELETE {{baseUrl}}/reviews/1
+Authorization: Bearer {{adminToken}}
