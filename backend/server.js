@@ -18,9 +18,16 @@ async function startServer() {
       console.log('====================================================');
     });
 
-    // 3. Xu ly dong ket noi an toan (Graceful Shutdown)
+    // 3. Khởi động worker tự động xác nhận đơn PENDING sau 30 giây
+    const BookingService = require('./src/services/booking.service');
+    const autoConfirmInterval = setInterval(() => {
+      BookingService.processPendingAutoConfirm();
+    }, 10 * 1000);
+
+    // 4. Xu ly dong ket noi an toan (Graceful Shutdown)
     const gracefulShutdown = async (signal) => {
       console.log(`\n[Server] Nhận tín hiệu ${signal}. Đang đóng các kết nối...`);
+      clearInterval(autoConfirmInterval);
       server.close(async () => {
         console.log('[Server] Đã đóng HTTP server.');
         try {

@@ -2,6 +2,8 @@ package com.stayhub.app.ui.booking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,18 @@ public class MyBookingsFragment extends Fragment {
 
     private final List<Booking> allBookings = new ArrayList<>();
     private int currentTabPosition = 0; // 0: Đang đặt, 1: Lịch sử
+
+    private final Handler pollHandler = new Handler(Looper.getMainLooper());
+    private boolean isSilentPolling = false;
+    private final Runnable pollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isAdded() && binding != null) {
+                isSilentPolling = true;
+                bookingViewModel.loadMyBookings(1, 50);
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -132,13 +146,14 @@ public class MyBookingsFragment extends Fragment {
 
             switch (state.getStatus()) {
                 case LOADING:
-                    if (!binding.swipeRefreshLayout.isRefreshing()) {
+                    if (!binding.swipeRefreshLayout.isRefreshing() && !isSilentPolling) {
                         binding.progressBar.setVisibility(View.VISIBLE);
                     }
                     binding.layoutEmpty.setVisibility(View.GONE);
                     break;
 
                 case SUCCESS:
+                    isSilentPolling = false;
                     binding.progressBar.setVisibility(View.GONE);
                     binding.swipeRefreshLayout.setRefreshing(false);
                     allBookings.clear();
@@ -149,6 +164,7 @@ public class MyBookingsFragment extends Fragment {
                     break;
 
                 case ERROR:
+                    isSilentPolling = false;
                     binding.progressBar.setVisibility(View.GONE);
                     binding.swipeRefreshLayout.setRefreshing(false);
                     String message = state.getMessage() != null ? state.getMessage() : getString(R.string.error_network);
@@ -213,11 +229,31 @@ public class MyBookingsFragment extends Fragment {
             binding.layoutEmpty.setVisibility(View.GONE);
             binding.rvBookings.setVisibility(View.VISIBLE);
         }
+
+        // Tự động kiểm tra cập nhật mỗi 5 giây nếu có đơn đang ở trạng thái Chờ xác nhận (PENDING)
+        boolean hasPending = false;
+        for (Booking booking : allBookings) {
+            if (Constants.STATUS_PENDING.equalsIgnoreCase(booking.getStatus())) {
+                hasPending = true;
+                break;
+            }
+        }
+        pollHandler.removeCallbacks(pollRunnable);
+        if (hasPending) {
+            pollHandler.postDelayed(pollRunnable, 5000);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pollHandler.removeCallbacks(pollRunnable);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        pollHandler.removeCallbacks(pollRunnable);
         binding = null;
     }
 }

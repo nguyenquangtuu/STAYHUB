@@ -87,7 +87,20 @@ class BookingService {
       // 7. Commit Transaction
       await conn.commit();
 
-      // 8. Trả về thông tin chi tiết đơn đặt phòng vừa tạo
+      // 8. Tự động xác nhận đơn sau 30 giây (mô phỏng quy trình duyệt đơn thực tế)
+      setTimeout(async () => {
+        try {
+          const current = await BookingModel.findById(bookingId);
+          if (current && current.status === 'PENDING') {
+            await BookingModel.updateStatus(bookingId, 'CONFIRMED');
+            console.log(`[Auto-Confirm] Đơn đặt phòng #${bookingId} đã tự động được xác nhận (CONFIRMED) sau 30s.`);
+          }
+        } catch (err) {
+          console.error(`[Auto-Confirm] Lỗi khi tự động duyệt đơn #${bookingId}:`, err.message);
+        }
+      }, 30 * 1000);
+
+      // 9. Trả về thông tin chi tiết đơn đặt phòng vừa tạo
       return await BookingModel.findById(bookingId);
     } catch (error) {
       // Rollback Transaction nếu có bất kỳ lỗi nào xảy ra
@@ -212,6 +225,23 @@ class BookingService {
       bookings: items,
       pagination: meta
     };
+  }
+
+  /**
+   * Worker định kỳ quét và tự động duyệt các đơn đặt phòng PENDING sau 30 giây
+   */
+  static async processPendingAutoConfirm() {
+    try {
+      const [pendingRows] = await pool.query(
+        "SELECT id FROM bookings WHERE status = 'PENDING' AND created_at <= (NOW() - INTERVAL 30 SECOND)"
+      );
+      for (const row of pendingRows) {
+        await BookingModel.updateStatus(row.id, 'CONFIRMED');
+        console.log(`[Auto-Confirm Worker] Đã tự động duyệt đơn #${row.id} sang CONFIRMED.`);
+      }
+    } catch (err) {
+      console.error('[Auto-Confirm Worker] Lỗi kiểm tra đơn PENDING:', err.message);
+    }
   }
 }
 
