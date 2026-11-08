@@ -25,6 +25,14 @@ STAYHUB/
 
 ## 2. KHỞI CHẠY BACKEND
 
+### Cách 1: Bằng Docker (Khuyến nghị - Tự động tạo CSDL MySQL 8.0 & nạp dữ liệu mẫu)
+- Nhấp đúp vào file `run_backend_docker.bat` ở thư mục gốc.
+- Hoặc gõ lệnh:
+  ```bash
+  docker compose up -d --build
+  ```
+
+### Cách 2: Bằng Node.js & MySQL cục bộ
 ```bash
 cd backend
 npm install

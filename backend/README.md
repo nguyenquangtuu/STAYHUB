@@ -84,7 +84,26 @@ backend/
 
 ## 3. HƯỚNG DẪN CÀI ĐẶT VÀ KHỞI CHẠY
 
-### Bước 1: Cài đặt Dependencies
+### Cách 1: Khởi chạy siêu tốc bằng Docker (Khuyến nghị)
+Hệ thống đã được đóng gói hoàn chỉnh bằng Docker Compose (gồm MySQL 8.0 tự động khởi tạo database + nạp sẵn dữ liệu mẫu, và Node.js API):
+
+1. **Khởi động bằng file script tiện ích (Windows):**
+   Chỉ cần nhấp đúp vào file `run_backend_docker.bat` ở thư mục gốc.
+
+2. **Hoặc chạy bằng lệnh Docker Compose:**
+   ```bash
+   # Tại thư mục backend/ hoặc thư mục gốc:
+   docker compose up -d --build
+   ```
+   - API lắng nghe tại: `http://localhost:5000`
+   - Health check: `http://localhost:5000/api/health`
+   - MySQL lắng nghe tại: `localhost:3306`
+   - Dừng dịch vụ: `docker compose down`
+   - Xem logs: `docker compose logs -f`
+
+---
+
+### Cách 2: Khởi chạy thủ công bằng NodeJS & MySQL cục bộ
 Di chuyển vào thư mục backend và chạy lệnh:
 ```bash
 cd backend
