@@ -1,13 +1,12 @@
 @echo off
-chcp 65001 >nul
-title [StayHub] Backend Server API
+title StayHub - Backend Server API
 
 echo ======================================================================
-echo             STAYHUB - KHỞI ĐỘNG BACKEND RESTFUL API
+echo             STAYHUB - KHOI DONG BACKEND RESTFUL API
 echo ======================================================================
 echo.
-echo  [1] Khoi dong bang Docker (Khuyen nghi: tu dong tao MySQL 8 + Seed data)
-echo  [2] Khoi dong bang NodeJS & MySQL Local (XAMPP / MySQL may thuc)
+echo  [1] Khoi dong bang Docker (Tu dong MySQL 8 va Seed du lieu mau)
+echo  [2] Khoi dong bang NodeJS va MySQL Local
 echo.
 set /p opt="Chon phuong thuc khoi dong (1 hoac 2) [Mac dinh: 1]: "
 
@@ -15,7 +14,7 @@ if "%opt%"=="2" goto run_node
 
 :run_docker
 call "%~dp0run_backend_docker.bat"
-exit /b 0
+goto end
 
 :run_node
 cd /d "%~dp0backend"
@@ -31,5 +30,7 @@ if not exist ".env" (
 )
 
 echo [OK] Dang khoi dong Backend API tai port 5000...
-npm run dev
+call npm run dev
+
+:end
 pause
