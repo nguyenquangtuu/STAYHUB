@@ -96,28 +96,119 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Ô nhập 6 chữ số OTP -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilOtp"
-                style="@style/Widget.StayHub.TextInputLayout"
+            <!-- 6 ô gạch dưới nhập mã OTP hiện đại -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_24"
-                android:hint="@string/otp_hint"
-                app:boxStrokeWidth="2dp">
+                android:layout_marginTop="@dimen/spacing_32">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOtp"
-                    android:layout_width="match_parent"
+                <!-- 6 ô hiển thị số và gạch dưới -->
+                <LinearLayout
+                    android:id="@+id/layoutOtpSlots"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvOtp1"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_focused"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="1" />
+
+                    <TextView
+                        android:id="@+id/tvOtp2"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_inactive"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="2" />
+
+                    <TextView
+                        android:id="@+id/tvOtp3"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_inactive"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="3" />
+
+                    <TextView
+                        android:id="@+id/tvOtp4"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_inactive"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="4" />
+
+                    <TextView
+                        android:id="@+id/tvOtp5"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_inactive"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="5" />
+
+                    <TextView
+                        android:id="@+id/tvOtp6"
+                        android:layout_width="48dp"
+                        android:layout_height="58dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/bg_otp_slot_inactive"
+                        android:gravity="center"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="6" />
+
+                </LinearLayout>
+
+                <!-- EditText ẩn phủ lên để nhận bàn phím và paste -->
+                <EditText
+                    android:id="@+id/etHiddenOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="66dp"
+                    android:background="@android:color/transparent"
+                    android:cursorVisible="false"
+                    android:importantForAutofill="no"
                     android:inputType="number"
-                    android:letterSpacing="0.4"
                     android:maxLength="6"
-                    android:textColor="@color/primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textColor="@android:color/transparent" />
+
+            </FrameLayout>
+
+            <!-- Báo lỗi nếu mã OTP không hợp lệ -->
+            <TextView
+                android:id="@+id/tvOtpError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:textColor="@color/error"
+                android:textSize="@dimen/text_size_caption"
+                android:visibility="gone"
+                tools:text="Mã OTP phải gồm đúng 6 chữ số"
+                tools:visibility="visible" />
 
             <!-- Nút Xác thực -->
             <FrameLayout
@@ -158,3 +249,4 @@
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

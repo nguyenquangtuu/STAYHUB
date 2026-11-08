@@ -37,3 +37,4 @@ public class VerifyOtpRequest {
         this.otp = otp;
     }
 }
+

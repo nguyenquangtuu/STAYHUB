@@ -49,3 +49,4 @@ public class CompleteRegistrationRequest {
         this.phone = phone;
     }
 }
+

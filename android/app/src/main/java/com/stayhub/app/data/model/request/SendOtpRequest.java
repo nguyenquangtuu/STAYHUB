@@ -25,3 +25,4 @@ public class SendOtpRequest {
         this.identifier = identifier;
     }
 }
+
