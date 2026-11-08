@@ -73,7 +73,17 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupListeners() {
+        binding.btnEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), EditProfileActivity.class);
+            startActivity(intent);
+        });
         binding.btnLogout.setOnClickListener(v -> showLogoutDialog());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayLocalUserInfo();
     }
 
     private void showLogoutDialog() {

@@ -150,6 +150,22 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Nút Chỉnh sửa thông tin -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditProfile"
+            style="@style/Widget.StayHub.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/spacing_16"
+            android:layout_marginTop="@dimen/spacing_24"
+            android:layout_marginEnd="@dimen/spacing_16"
+            android:text="@string/btn_edit_profile"
+            android:textSize="@dimen/text_size_body_large"
+            app:cornerRadius="@dimen/spacing_8"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart"
+            app:iconTint="@color/on_primary" />
+
         <!-- Nút Đăng xuất -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
@@ -157,7 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginStart="@dimen/spacing_16"
-            android:layout_marginTop="@dimen/spacing_32"
+            android:layout_marginTop="@dimen/spacing_12"
             android:layout_marginEnd="@dimen/spacing_16"
             android:layout_marginBottom="@dimen/spacing_32"
             android:text="@string/btn_logout"

@@ -85,5 +85,29 @@ public class AuthRepository extends BaseRepository {
             }
         });
     }
+
+    public void updateProfile(String fullName, String phone, ApiCallback<User> callback) {
+        apiService.updateProfile(new com.stayhub.app.data.model.request.UpdateProfileRequest(fullName, phone))
+                .enqueue(new Callback<ApiResponse<User>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ApiResponse<User>> call, @NonNull Response<ApiResponse<User>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            ApiResponse<User> apiResponse = response.body();
+                            if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                                callback.onSuccess(apiResponse.getData(), apiResponse.getMessage());
+                            } else {
+                                callback.onError(apiResponse.getMessage());
+                            }
+                        } else {
+                            callback.onError(parseErrorMessage(response));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ApiResponse<User>> call, @NonNull Throwable t) {
+                        callback.onError("Không thể kết nối đến máy chủ: " + t.getLocalizedMessage());
+                    }
+                });
+    }
 }
 

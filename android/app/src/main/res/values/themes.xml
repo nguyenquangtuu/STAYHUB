@@ -47,10 +47,27 @@
         <item name="strokeWidth">@dimen/card_stroke_width</item>
     </style>
 
+    <!-- Standard StayHub Filled Button -->
+    <style name="Widget.StayHub.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/spacing_8</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/on_primary</item>
+    </style>
+
     <!-- Outlined Button Style -->
     <style name="Widget.StayHub.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="cornerRadius">@dimen/spacing_8</item>
         <item name="strokeColor">@color/primary</item>
+    </style>
+
+    <!-- Standard StayHub OutlinedBox TextInputLayout -->
+    <style name="Widget.StayHub.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="boxCornerRadiusTopStart">@dimen/spacing_8</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/spacing_8</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/spacing_8</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/spacing_8</item>
     </style>
 
     <!-- BottomNavigationView Styling (Phong cách Airbnb / Booking.com tinh tế, sang trọng) -->

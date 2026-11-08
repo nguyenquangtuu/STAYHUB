@@ -20,6 +20,7 @@ public class AuthViewModel extends ViewModel {
     private final MutableLiveData<UiState<AuthResponse>> loginState = new MutableLiveData<>();
     private final MutableLiveData<UiState<AuthResponse>> registerState = new MutableLiveData<>();
     private final MutableLiveData<UiState<User>> profileState = new MutableLiveData<>();
+    private final MutableLiveData<UiState<User>> updateProfileState = new MutableLiveData<>();
 
     public AuthViewModel() {
         this.authRepository = new AuthRepository();
@@ -35,6 +36,10 @@ public class AuthViewModel extends ViewModel {
 
     public LiveData<UiState<User>> getProfileState() {
         return profileState;
+    }
+
+    public LiveData<UiState<User>> getUpdateProfileState() {
+        return updateProfileState;
     }
 
     /**
@@ -87,6 +92,25 @@ public class AuthViewModel extends ViewModel {
             @Override
             public void onError(String errorMessage) {
                 profileState.postValue(UiState.error(errorMessage));
+            }
+        });
+    }
+
+    /**
+     * Cập nhật thông tin tài khoản người dùng
+     */
+    public void updateProfile(String fullName, String phone) {
+        updateProfileState.postValue(UiState.loading());
+        authRepository.updateProfile(fullName, phone, new ApiCallback<User>() {
+            @Override
+            public void onSuccess(User data, String message) {
+                updateProfileState.postValue(UiState.success(data, message));
+                profileState.postValue(UiState.success(data, message));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                updateProfileState.postValue(UiState.error(errorMessage));
             }
         });
     }

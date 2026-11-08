@@ -10,6 +10,7 @@ import com.stayhub.app.data.model.request.BookingRequest;
 import com.stayhub.app.data.model.request.LoginRequest;
 import com.stayhub.app.data.model.request.RegisterRequest;
 import com.stayhub.app.data.model.request.ReviewRequest;
+import com.stayhub.app.data.model.request.UpdateProfileRequest;
 import com.stayhub.app.data.model.response.AuthResponse;
 import com.stayhub.app.data.model.response.AvailabilityResponse;
 import com.stayhub.app.data.model.response.BookingListResponse;
@@ -23,6 +24,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -40,6 +42,9 @@ public interface ApiService {
 
     @GET("auth/me")
     Call<ApiResponse<User>> getMe();
+
+    @PUT("auth/profile")
+    Call<ApiResponse<User>> updateProfile(@Body UpdateProfileRequest request);
 
     // 2. Homestay
     @GET("homestays")

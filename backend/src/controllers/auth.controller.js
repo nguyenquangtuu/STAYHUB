@@ -48,6 +48,22 @@ class AuthController {
       next(error);
     }
   }
+
+  /**
+   * Cập nhật thông tin tài khoản hiện tại
+   */
+  static async updateProfile(req, res, next) {
+    try {
+      const { full_name, phone } = req.body;
+      const user = await AuthService.updateProfile(req.user.id, {
+        fullName: full_name,
+        phone
+      });
+      return sendSuccess(res, user, 'Cập nhật thông tin tài khoản thành công', 200);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = AuthController;

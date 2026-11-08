@@ -105,6 +105,11 @@
 
     <!-- Profile -->
     <string name="profile_title">Hồ sơ cá nhân</string>
+    <string name="btn_edit_profile">Chỉnh sửa thông tin</string>
+    <string name="edit_profile_title">Chỉnh sửa hồ sơ</string>
+    <string name="btn_save_changes">Lưu thay đổi</string>
+    <string name="update_profile_success">Cập nhật hồ sơ thành công!</string>
+    <string name="update_profile_error">Cập nhật hồ sơ thất bại</string>
     <string name="btn_logout">Đăng xuất</string>
     <string name="confirm_logout_title">Đăng xuất</string>
     <string name="confirm_logout_message">Bạn có chắc chắn muốn đăng xuất khỏi ứng dụng không?</string>

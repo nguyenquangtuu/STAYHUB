@@ -89,6 +89,18 @@ class AuthService {
     }
     return user;
   }
+
+  /**
+   * Cập nhật thông tin tài khoản hiện tại (Họ tên, SĐT)
+   */
+  static async updateProfile(userId, { fullName, phone }) {
+    await UserModel.update(userId, { fullName, phone });
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw ApiError.notFound('Không tìm thấy thông tin tài khoản');
+    }
+    return user;
+  }
 }
 
 module.exports = AuthService;

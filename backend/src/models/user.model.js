@@ -49,6 +49,35 @@ class UserModel {
     );
     return result.insertId;
   }
+
+  /**
+   * Cập nhật thông tin người dùng (Họ tên, Số điện thoại)
+   * @param {number} id
+   * @param {{ fullName?: string, phone?: string }} data
+   * @returns {Promise<boolean>}
+   */
+  static async update(id, { fullName, phone }) {
+    const fields = [];
+    const values = [];
+
+    if (fullName !== undefined) {
+      fields.push('full_name = ?');
+      values.push(fullName);
+    }
+    if (phone !== undefined) {
+      fields.push('phone = ?');
+      values.push(phone);
+    }
+
+    if (fields.length === 0) return false;
+
+    values.push(id);
+    const [result] = await pool.query(
+      `UPDATE users SET ${fields.join(', ')} WHERE id = ?`,
+      values
+    );
+    return result.affectedRows > 0;
+  }
 }
 
 module.exports = UserModel;
