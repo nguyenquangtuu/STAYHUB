@@ -4,10 +4,147 @@ const UserModel = require('../models/user.model');
 const ApiError = require('../utils/ApiError');
 const env = require('../config/env');
 
+// Bộ nhớ đệm lưu mã OTP tạm thời
+const otpCache = new Map();
+
 /**
  * Service xử lý nghiệp vụ Authentication (Đăng ký, Đăng nhập, Profile)
  */
 class AuthService {
+  /**
+   * Chuẩn hóa Identifier (email hoặc phone)
+   */
+  static normalizeIdentifier(identifier) {
+    const raw = (identifier || '').trim();
+    if (raw.includes('@')) {
+      return { value: raw.toLowerCase(), type: 'email' };
+    }
+    // Chuẩn hóa số điện thoại Việt Nam (+84 -> 0)
+    let phone = raw.replace(/\s+/g, '');
+    if (phone.startsWith('+84')) {
+      phone = '0' + phone.substring(3);
+    }
+    return { value: phone, type: 'phone' };
+  }
+
+  /**
+   * Gửi mã OTP xác thực (Đăng nhập / Đăng ký một chạm)
+   */
+  static async sendOtp(identifier) {
+    const { value, type } = this.normalizeIdentifier(identifier);
+    if (!value) {
+      throw ApiError.badRequest('Vui lòng cung cấp số điện thoại hoặc email hợp lệ');
+    }
+
+    // Kiểm tra xem số điện thoại / email đã tồn tại trong hệ thống chưa
+    const existingUser = await UserModel.findByIdentifier(value);
+    const isRegistered = !!existingUser;
+
+    // Sinh mã OTP (mẫu cố định 123456 để kiểm thử thuận tiện)
+    const mockOtp = '123456';
+    otpCache.set(value, {
+      otp: mockOtp,
+      expiresAt: Date.now() + 10 * 60 * 1000, // 10 phút
+      isRegistered
+    });
+
+    return {
+      identifier: value,
+      type,
+      is_registered: isRegistered,
+      otp_mock: mockOtp
+    };
+  }
+
+  /**
+   * Xác thực mã OTP
+   */
+  static async verifyOtp({ identifier, otp }) {
+    const { value, type } = this.normalizeIdentifier(identifier);
+    const cached = otpCache.get(value);
+
+    // Kiểm tra tính hợp lệ của OTP (chấp nhận 123456 hoặc mã trong cache)
+    const isValid = otp === '123456' || (cached && cached.otp === otp && cached.expiresAt > Date.now());
+    if (!isValid) {
+      throw ApiError.badRequest('Mã OTP không chính xác hoặc đã hết hạn');
+    }
+
+    // Xóa cache sau khi dùng
+    otpCache.delete(value);
+
+    // Kiểm tra tài khoản người dùng
+    const user = await UserModel.findByIdentifier(value);
+    if (user) {
+      // Đã đăng ký -> Đăng nhập luôn và trả về JWT token
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        env.JWT_SECRET,
+        { expiresIn: env.JWT_EXPIRES_IN }
+      );
+      const { password_hash, ...userProfile } = user;
+      return {
+        is_registered: true,
+        user: userProfile,
+        token
+      };
+    } else {
+      // Chưa đăng ký -> Thông báo bước tiếp theo để điền thông tin
+      return {
+        is_registered: false,
+        identifier: value,
+        type
+      };
+    }
+  }
+
+  /**
+   * Hoàn tất đăng ký tài khoản mới sau khi xác thực OTP thành công
+   */
+  static async completeRegistration({ fullName, email, phone, password = 'StayHubUser@2026' }) {
+    const normEmail = (email || '').trim().toLowerCase();
+    const normPhone = (phone || '').trim().replace('+84', '0');
+
+    // 1. Kiểm tra trùng lặp email
+    const existingEmail = await UserModel.findByEmail(normEmail);
+    if (existingEmail) {
+      throw ApiError.conflict('Email này đã được sử dụng bởi một tài khoản khác');
+    }
+
+    // 2. Kiểm tra trùng lặp số điện thoại
+    if (normPhone) {
+      const existingPhone = await UserModel.findByPhone(normPhone);
+      if (existingPhone) {
+        throw ApiError.conflict('Số điện thoại này đã được sử dụng bởi tài khoản khác');
+      }
+    }
+
+    // 3. Tạo mật khẩu hash
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    // 4. Lưu vào cơ sở dữ liệu
+    const newUserId = await UserModel.create({
+      fullName: fullName.trim(),
+      email: normEmail,
+      passwordHash,
+      phone: normPhone || null,
+      role: 'user'
+    });
+
+    const newUser = await UserModel.findById(newUserId);
+
+    // 5. Sinh JWT token
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email, role: newUser.role },
+      env.JWT_SECRET,
+      { expiresIn: env.JWT_EXPIRES_IN }
+    );
+
+    return {
+      user: newUser,
+      token
+    };
+  }
   /**
    * Đăng ký tài khoản mới
    */

@@ -21,6 +21,37 @@ class UserModel {
   }
 
   /**
+   * Tìm người dùng theo Số điện thoại
+   * @param {string} phone
+   * @returns {Promise<object|null>}
+   */
+  static async findByPhone(phone) {
+    const cleanPhone = phone.trim();
+    const [rows] = await pool.query(
+      `SELECT id, full_name, email, password_hash, phone, role, created_at, updated_at 
+       FROM users 
+       WHERE phone = ? OR REPLACE(phone, '+84', '0') = ? 
+       LIMIT 1`,
+      [cleanPhone, cleanPhone]
+    );
+    return rows[0] || null;
+  }
+
+  /**
+   * Tìm người dùng theo Email hoặc Số điện thoại
+   * @param {string} identifier
+   * @returns {Promise<object|null>}
+   */
+  static async findByIdentifier(identifier) {
+    const trimmed = identifier.trim();
+    if (trimmed.includes('@')) {
+      return await this.findByEmail(trimmed.toLowerCase());
+    } else {
+      return await this.findByPhone(trimmed);
+    }
+  }
+
+  /**
    * Tìm người dùng theo ID (không trả về password_hash)
    * @param {number} id
    * @returns {Promise<object|null>}

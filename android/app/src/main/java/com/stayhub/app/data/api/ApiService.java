@@ -7,15 +7,20 @@ import com.stayhub.app.data.model.Review;
 import com.stayhub.app.data.model.Room;
 import com.stayhub.app.data.model.User;
 import com.stayhub.app.data.model.request.BookingRequest;
+import com.stayhub.app.data.model.request.CompleteRegistrationRequest;
 import com.stayhub.app.data.model.request.LoginRequest;
 import com.stayhub.app.data.model.request.RegisterRequest;
 import com.stayhub.app.data.model.request.ReviewRequest;
+import com.stayhub.app.data.model.request.SendOtpRequest;
 import com.stayhub.app.data.model.request.UpdateProfileRequest;
+import com.stayhub.app.data.model.request.VerifyOtpRequest;
 import com.stayhub.app.data.model.response.AuthResponse;
 import com.stayhub.app.data.model.response.AvailabilityResponse;
 import com.stayhub.app.data.model.response.BookingListResponse;
 import com.stayhub.app.data.model.response.HomestayListResponse;
 import com.stayhub.app.data.model.response.ReviewListResponse;
+import com.stayhub.app.data.model.response.SendOtpResponse;
+import com.stayhub.app.data.model.response.VerifyOtpResponse;
 
 import java.util.List;
 
@@ -33,7 +38,16 @@ import retrofit2.http.Query;
  */
 public interface ApiService {
 
-    // 1. Authentication
+    // 1. Authentication (Xác thực một chạm OTP + Truyền thống)
+    @POST("auth/send-otp")
+    Call<ApiResponse<SendOtpResponse>> sendOtp(@Body SendOtpRequest request);
+
+    @POST("auth/verify-otp")
+    Call<ApiResponse<VerifyOtpResponse>> verifyOtp(@Body VerifyOtpRequest request);
+
+    @POST("auth/complete-registration")
+    Call<ApiResponse<AuthResponse>> completeRegistration(@Body CompleteRegistrationRequest request);
+
     @POST("auth/register")
     Call<ApiResponse<AuthResponse>> register(@Body RegisterRequest request);
 

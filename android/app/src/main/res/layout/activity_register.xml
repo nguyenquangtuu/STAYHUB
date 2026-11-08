@@ -1,165 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView 
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:fillViewport="true">
+    android:background="@color/background">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_24">
+        android:background="@color/surface">
 
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_24"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_logo" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/primary"
+            app:title="@string/complete_profile_title"
+            app:titleTextColor="@color/text_primary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_16"
-            android:text="@string/register_title"
-            android:textColor="@color/text_primary"
-            android:textSize="@dimen/text_size_headline_small"
-            android:textStyle="bold" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_4"
-            android:text="@string/register_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="@dimen/text_size_body_medium" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Họ và tên -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFullName"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_24"
-            android:hint="@string/label_full_name"
-            app:boxStrokeColor="@color/primary"
-            app:startIconDrawable="@drawable/ic_person"
-            app:startIconTint="@color/text_secondary">
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_24">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/text_size_body_large" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Email -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
-            android:hint="@string/label_email"
-            app:boxStrokeColor="@color/primary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/text_size_body_large" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Số điện thoại -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPhone"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
-            android:hint="@string/label_phone"
-            app:boxStrokeColor="@color/primary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/text_size_body_large" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Mật khẩu -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPassword"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_16"
-            android:hint="@string/label_password"
-            app:boxStrokeColor="@color/primary"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColor="@color/text_primary"
-                android:textSize="@dimen/text_size_body_large" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Nút Đăng ký -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_24">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:text="@string/register_button"
-                android:textSize="@dimen/text_size_body_large"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="@dimen/spacing_8" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/on_primary"
-                android:visibility="gone" />
-        </FrameLayout>
+                android:text="@string/complete_profile_title"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_headline_small"
+                android:textStyle="bold" />
 
-        <!-- Quay lại Đăng nhập -->
-        <TextView
-            android:id="@+id/tvGoToLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/spacing_20"
-            android:layout_marginBottom="@dimen/spacing_24"
-            android:padding="@dimen/spacing_8"
-            android:text="@string/already_have_account"
-            android:textColor="@color/secondary"
-            android:textSize="@dimen/text_size_body_medium"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_4"
+                android:text="@string/complete_profile_subtitle"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body_medium" />
 
-    </LinearLayout>
+            <!-- Họ và tên -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFullName"
+                style="@style/Widget.StayHub.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:hint="@string/label_full_name"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="@color/primary">
 
-</ScrollView>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body_large" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                style="@style/Widget.StayHub.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:hint="@string/label_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body_large" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Số điện thoại -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPhone"
+                style="@style/Widget.StayHub.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:hint="@string/label_phone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body_large" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Nút Hoàn tất đăng ký -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_32">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegister"
+                    style="@style/Widget.StayHub.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:text="@string/btn_complete_registration"
+                    android:textSize="@dimen/text_size_body_large" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/on_primary"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

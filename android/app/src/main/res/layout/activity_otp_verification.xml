@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/primary"
+            app:title="@string/otp_title"
+            app:titleTextColor="@color/text_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_24">
+
+            <!-- Icon minh họa -->
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:background="@drawable/bg_image_placeholder"
+                android:backgroundTint="@color/primary_container"
+                android:contentDescription="@string/otp_title"
+                android:padding="@dimen/spacing_16"
+                android:src="@drawable/ic_check_circle"
+                app:tint="@color/primary" />
+
+            <TextView
+                android:id="@+id/tvOtpSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:gravity="center"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body_large"
+                tools:text="Mã OTP gồm 6 chữ số đã được gửi đến 0912345678" />
+
+            <!-- Thẻ gợi ý mã OTP mẫu (rất thuận tiện cho giảng viên / kiểm thử viên) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMockOtp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24"
+                app:cardBackgroundColor="@color/secondary_container"
+                app:cardCornerRadius="@dimen/spacing_8"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_12">
+
+                    <TextView
+                        android:id="@+id/tvMockOtpHint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="💡 Mã OTP thử nghiệm: 123456"
+                        android:textColor="@color/on_secondary_container"
+                        android:textSize="@dimen/text_size_body_medium"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnQuickFillOtp"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Điền nhanh"
+                        android:textColor="@color/primary"
+                        android:textSize="@dimen/text_size_body_small" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Ô nhập 6 chữ số OTP -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilOtp"
+                style="@style/Widget.StayHub.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:hint="@string/otp_hint"
+                app:boxStrokeWidth="2dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:letterSpacing="0.4"
+                    android:maxLength="6"
+                    android:textColor="@color/primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Nút Xác thực -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_24">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerify"
+                    style="@style/Widget.StayHub.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:text="@string/btn_verify_otp"
+                    android:textSize="@dimen/text_size_body_large" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/on_primary"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <!-- Nút Gửi lại mã -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnResendOtp"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:text="@string/btn_resend_otp"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_body_medium" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

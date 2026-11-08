@@ -27,13 +27,19 @@
             </intent-filter>
         </activity>
 
-        <!-- Đăng nhập -->
+        <!-- Đăng nhập / Xác thực một chạm -->
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Đăng ký -->
+        <!-- Xác thực OTP -->
+        <activity
+            android:name=".ui.auth.OtpVerificationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Hoàn tất Đăng ký -->
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false"

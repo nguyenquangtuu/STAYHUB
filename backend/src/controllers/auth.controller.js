@@ -6,6 +6,54 @@ const { sendSuccess } = require('../utils/response');
  */
 class AuthController {
   /**
+   * Gửi mã OTP xác thực (Đăng nhập / Đăng ký một chạm)
+   */
+  static async sendOtp(req, res, next) {
+    try {
+      const { identifier } = req.body;
+      const result = await AuthService.sendOtp(identifier);
+      const actionText = result.is_registered ? 'đăng nhập' : 'đăng ký';
+      return sendSuccess(res, result, `Mã OTP xác thực ${actionText} đã được gửi thành công`, 200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Xác thực mã OTP
+   */
+  static async verifyOtp(req, res, next) {
+    try {
+      const { identifier, otp } = req.body;
+      const result = await AuthService.verifyOtp({ identifier, otp });
+      const msg = result.is_registered 
+        ? 'Đăng nhập thành công' 
+        : 'Xác thực OTP thành công. Vui lòng hoàn tất thông tin tài khoản';
+      return sendSuccess(res, result, msg, 200);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Hoàn tất thông tin đăng ký tài khoản
+   */
+  static async completeRegistration(req, res, next) {
+    try {
+      const { full_name, email, phone, password } = req.body;
+      const result = await AuthService.completeRegistration({
+        fullName: full_name,
+        email,
+        phone,
+        password
+      });
+      return sendSuccess(res, result, 'Đăng ký tài khoản thành công', 201);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * Đăng ký tài khoản
    */
   static async register(req, res, next) {

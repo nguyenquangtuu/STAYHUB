@@ -78,10 +78,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 : "";
 
         binding.tilFullName.setError(null);
+        binding.tilPhone.setError(null);
 
-        if (TextUtils.isEmpty(fullName)) {
+        if (!com.stayhub.app.util.ValidationUtils.isValidFullName(fullName)) {
             binding.tilFullName.setError(getString(R.string.error_empty_name));
             binding.etFullName.requestFocus();
+            return;
+        }
+
+        if (!TextUtils.isEmpty(phone) && !com.stayhub.app.util.ValidationUtils.isValidVietnamesePhone(phone)) {
+            binding.tilPhone.setError(getString(R.string.error_invalid_phone));
+            binding.etPhone.requestFocus();
             return;
         }
 

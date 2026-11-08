@@ -2,8 +2,9 @@ package com.stayhub.app.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,16 +15,23 @@ import com.stayhub.app.StayHubApplication;
 import com.stayhub.app.data.local.SessionManager;
 import com.stayhub.app.databinding.ActivityRegisterBinding;
 import com.stayhub.app.ui.home.MainActivity;
+import com.stayhub.app.util.ValidationUtils;
 import com.stayhub.app.viewmodel.AuthViewModel;
 
 /**
- * Màn hình Đăng ký tài khoản
+ * Màn hình Hoàn tất đăng ký tài khoản (sau khi xác thực OTP thành công)
  */
 public class RegisterActivity extends AppCompatActivity {
+
+    public static final String EXTRA_IDENTIFIER = "extra_identifier";
+    public static final String EXTRA_TYPE = "extra_type";
 
     private ActivityRegisterBinding binding;
     private AuthViewModel authViewModel;
     private SessionManager sessionManager;
+
+    private String identifier;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,88 +42,118 @@ public class RegisterActivity extends AppCompatActivity {
         sessionManager = StayHubApplication.getInstance().getSessionManager();
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
+        parseIntentData();
+        setupToolbar();
+        setupForm();
         setupListeners();
         observeViewModel();
     }
 
-    private void setupListeners() {
-        binding.btnRegister.setOnClickListener(v -> performRegister());
-
-        binding.tvGoToLogin.setOnClickListener(v -> finish());
+    private void parseIntentData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            identifier = intent.getStringExtra(EXTRA_IDENTIFIER);
+            type = intent.getStringExtra(EXTRA_TYPE);
+        }
     }
 
-    /**
-     * Xác thực form đăng ký và gọi API
-     */
-    private void performRegister() {
-        String fullName = binding.etFullName.getText() != null ? binding.etFullName.getText().toString().trim() : "";
-        String email = binding.etEmail.getText() != null ? binding.etEmail.getText().toString().trim() : "";
-        String phone = binding.etPhone.getText() != null ? binding.etPhone.getText().toString().trim() : "";
-        String password = binding.etPassword.getText() != null ? binding.etPassword.getText().toString().trim() : "";
+    private void setupToolbar() {
+        setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
+    }
 
-        // Reset lỗi hiển thị
+    private void setupForm() {
+        if ("phone".equalsIgnoreCase(type)) {
+            // Xác thực bằng SĐT -> Khóa ô SĐT, yêu cầu nhập Email + Họ tên
+            binding.etPhone.setText(identifier);
+            binding.tilPhone.setEnabled(false);
+            binding.tilPhone.setHelperText("✓ Số điện thoại đã xác thực");
+            binding.etFullName.requestFocus();
+        } else {
+            // Xác thực bằng Email -> Khóa ô Email, yêu cầu nhập SĐT + Họ tên
+            binding.etEmail.setText(identifier);
+            binding.tilEmail.setEnabled(false);
+            binding.tilEmail.setHelperText("✓ Email đã xác thực");
+            binding.etFullName.requestFocus();
+        }
+    }
+
+    private void setupListeners() {
+        binding.btnRegister.setOnClickListener(v -> validateAndSubmit());
+    }
+
+    private void validateAndSubmit() {
+        String fullName = binding.etFullName.getText() != null
+                ? binding.etFullName.getText().toString().trim()
+                : "";
+        String email = binding.etEmail.getText() != null
+                ? binding.etEmail.getText().toString().trim()
+                : "";
+        String phone = binding.etPhone.getText() != null
+                ? binding.etPhone.getText().toString().trim()
+                : "";
+
         binding.tilFullName.setError(null);
         binding.tilEmail.setError(null);
-        binding.tilPassword.setError(null);
+        binding.tilPhone.setError(null);
 
-        boolean isValid = true;
-
-        if (fullName.isEmpty()) {
+        // 1. Kiểm tra Họ và tên
+        if (!ValidationUtils.isValidFullName(fullName)) {
             binding.tilFullName.setError(getString(R.string.error_empty_name));
-            isValid = false;
+            binding.etFullName.requestFocus();
+            return;
         }
 
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        // 2. Kiểm tra Email
+        if (TextUtils.isEmpty(email) || !ValidationUtils.isValidEmail(email)) {
             binding.tilEmail.setError(getString(R.string.error_invalid_email));
-            isValid = false;
+            binding.etEmail.requestFocus();
+            return;
         }
 
-        if (password.length() < 6) {
-            binding.tilPassword.setError(getString(R.string.error_short_password));
-            isValid = false;
+        // 3. Kiểm tra Số điện thoại
+        if (!TextUtils.isEmpty(phone) && !ValidationUtils.isValidVietnamesePhone(phone)) {
+            binding.tilPhone.setError(getString(R.string.error_invalid_phone));
+            binding.etPhone.requestFocus();
+            return;
         }
 
-        if (!isValid) return;
-
-        authViewModel.register(fullName, email, password, phone);
+        authViewModel.completeRegistration(fullName, email, phone);
     }
 
     private void observeViewModel() {
-        authViewModel.getRegisterState().observe(this, state -> {
+        authViewModel.getCompleteRegistrationState().observe(this, state -> {
             if (state == null) return;
 
-            switch (state.getStatus()) {
-                case LOADING:
-                    setLoading(true);
-                    break;
+            if (state.isLoading()) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.btnRegister.setEnabled(false);
+            } else if (state.isSuccess() && state.getData() != null) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnRegister.setEnabled(true);
 
-                case SUCCESS:
-                    setLoading(false);
-                    if (state.getData() != null) {
-                        // Lưu thông tin phiên đăng nhập
-                        sessionManager.saveSession(state.getData().getToken(), state.getData().getUser());
+                // Lưu JWT token và thông tin người dùng
+                sessionManager.saveSession(state.getData().getToken(), state.getData().getUser());
 
-                        // Chuyển sang màn hình chính
-                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                    break;
+                Toast.makeText(this, R.string.register_success, Toast.LENGTH_SHORT).show();
 
-                case ERROR:
-                    setLoading(false);
-                    String message = state.getMessage() != null ? state.getMessage() : getString(R.string.error_network);
-                    Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
-                    break;
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else if (state.isError()) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnRegister.setEnabled(true);
+
+                String errorMsg = state.getMessage() != null
+                        ? state.getMessage()
+                        : getString(R.string.error_network);
+                Snackbar.make(binding.getRoot(), errorMsg, Snackbar.LENGTH_LONG).show();
             }
         });
     }
-
-    private void setLoading(boolean isLoading) {
-        binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnRegister.setEnabled(!isLoading);
-        binding.btnRegister.setText(isLoading ? "" : getString(R.string.register_button));
-    }
 }
-
