@@ -54,23 +54,14 @@
     </style>
 
     <!-- BottomNavigationView Styling (Phong cách Airbnb / Booking.com tinh tế, sang trọng) -->
-    <style name="Widget.StayHub.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+    <style name="Widget.StayHub.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">@color/surface</item>
-        <item name="elevation">12dp</item>
+        <item name="elevation">8dp</item>
         <item name="itemIconTint">@color/nav_item_color_selector</item>
         <item name="itemTextColor">@color/nav_item_color_selector</item>
-        <item name="itemActiveIndicatorStyle">@style/Widget.StayHub.NoActiveIndicator</item>
         <item name="itemTextAppearanceActive">@style/TextAppearance.StayHub.BottomNav.Active</item>
         <item name="itemTextAppearanceInactive">@style/TextAppearance.StayHub.BottomNav.Inactive</item>
-        <item name="itemPaddingTop">8dp</item>
-        <item name="itemPaddingBottom">10dp</item>
         <item name="itemRippleColor">@color/primary_container</item>
-    </style>
-
-    <style name="Widget.StayHub.NoActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@android:color/transparent</item>
-        <item name="android:width">0dp</item>
-        <item name="android:height">0dp</item>
     </style>
 
     <style name="TextAppearance.StayHub.BottomNav.Active" parent="TextAppearance.Material3.LabelMedium">

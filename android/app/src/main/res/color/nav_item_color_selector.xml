@@ -6,3 +6,4 @@
     <!-- Trạng thái tab bình thường (Inactive) -->
     <item android:color="@color/text_tertiary" />
 </selector>
+
