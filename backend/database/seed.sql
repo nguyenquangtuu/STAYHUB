@@ -1,3 +1,6 @@
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 -- ==============================================================
 -- STAYHUB DATABASE SEED DATA
 -- Dữ liệu mẫu chuẩn cho đồ án:
