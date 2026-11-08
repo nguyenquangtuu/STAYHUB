@@ -3,6 +3,9 @@ package com.stayhub.app.ui.home;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
+        // Đảm bảo thanh điều hướng không bị che bởi thanh cử chỉ (Gesture Navigation bar)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigation, (view, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(0, 0, 0, insets.bottom);
+            return windowInsets;
+        });
+
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {

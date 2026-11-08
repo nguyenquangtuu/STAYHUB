@@ -32,6 +32,7 @@
         style="@style/Widget.StayHub.BottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:itemIconSize="22dp"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
