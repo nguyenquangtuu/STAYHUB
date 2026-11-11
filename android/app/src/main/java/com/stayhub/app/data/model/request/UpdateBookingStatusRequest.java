@@ -22,3 +22,4 @@ public class UpdateBookingStatusRequest {
         this.status = status;
     }
 }
+
