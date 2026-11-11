@@ -24,6 +24,8 @@ public class BookingViewModel extends ViewModel {
     private final MutableLiveData<UiState<Booking>> createBookingState = new MutableLiveData<>();
     private final MutableLiveData<UiState<BookingListResponse>> myBookingsState = new MutableLiveData<>();
     private final MutableLiveData<UiState<Booking>> cancelBookingState = new MutableLiveData<>();
+    private final MutableLiveData<UiState<BookingListResponse>> adminBookingsState = new MutableLiveData<>();
+    private final MutableLiveData<UiState<Booking>> updateStatusState = new MutableLiveData<>();
 
     public BookingViewModel() {
         this.roomRepository = new RoomRepository();
@@ -114,6 +116,50 @@ public class BookingViewModel extends ViewModel {
             @Override
             public void onError(String errorMessage) {
                 cancelBookingState.postValue(UiState.error(errorMessage));
+            }
+        });
+    }
+
+    public LiveData<UiState<BookingListResponse>> getAdminBookingsState() {
+        return adminBookingsState;
+    }
+
+    public LiveData<UiState<Booking>> getUpdateStatusState() {
+        return updateStatusState;
+    }
+
+    /**
+     * Tải danh sách đơn đặt phòng toàn hệ thống (Dành cho Admin)
+     */
+    public void loadAdminBookings(String status, Integer homestayId, Integer page, Integer limit) {
+        adminBookingsState.postValue(UiState.loading());
+        bookingRepository.getAdminBookings(status, homestayId, page, limit, new ApiCallback<BookingListResponse>() {
+            @Override
+            public void onSuccess(BookingListResponse data, String message) {
+                adminBookingsState.postValue(UiState.success(data, message));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                adminBookingsState.postValue(UiState.error(errorMessage));
+            }
+        });
+    }
+
+    /**
+     * Cập nhật trạng thái đơn đặt phòng (Admin duyệt / từ chối / hoàn thành)
+     */
+    public void updateBookingStatus(int bookingId, String newStatus) {
+        updateStatusState.postValue(UiState.loading());
+        bookingRepository.updateBookingStatus(bookingId, newStatus, new ApiCallback<Booking>() {
+            @Override
+            public void onSuccess(Booking data, String message) {
+                updateStatusState.postValue(UiState.success(data, message));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                updateStatusState.postValue(UiState.error(errorMessage));
             }
         });
     }

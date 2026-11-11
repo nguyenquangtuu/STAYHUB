@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.stayhub.app.data.model.ApiResponse;
 import com.stayhub.app.data.model.Booking;
 import com.stayhub.app.data.model.request.BookingRequest;
+import com.stayhub.app.data.model.request.UpdateBookingStatusRequest;
 import com.stayhub.app.data.model.response.BookingListResponse;
 
 import retrofit2.Call;
@@ -82,6 +83,53 @@ public class BookingRepository extends BaseRepository {
             @Override
             public void onFailure(@NonNull Call<ApiResponse<Booking>> call, @NonNull Throwable t) {
                 callback.onError("Không thể hủy đơn đặt phòng: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void getAdminBookings(String status, Integer homestayId, Integer page, Integer limit, ApiCallback<BookingListResponse> callback) {
+        apiService.getAdminBookings(status, homestayId, page, limit).enqueue(new Callback<ApiResponse<BookingListResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<BookingListResponse>> call, @NonNull Response<ApiResponse<BookingListResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<BookingListResponse> apiResponse = response.body();
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        callback.onSuccess(apiResponse.getData(), apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<BookingListResponse>> call, @NonNull Throwable t) {
+                callback.onError("Không thể tải danh sách đơn đặt phòng quản trị: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void updateBookingStatus(int bookingId, String newStatus, ApiCallback<Booking> callback) {
+        UpdateBookingStatusRequest request = new UpdateBookingStatusRequest(newStatus);
+        apiService.updateBookingStatus(bookingId, request).enqueue(new Callback<ApiResponse<Booking>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Booking>> call, @NonNull Response<ApiResponse<Booking>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Booking> apiResponse = response.body();
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        callback.onSuccess(apiResponse.getData(), apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Booking>> call, @NonNull Throwable t) {
+                callback.onError("Không thể cập nhật trạng thái đơn đặt phòng: " + t.getLocalizedMessage());
             }
         });
     }

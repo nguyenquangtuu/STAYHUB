@@ -2,6 +2,8 @@ package com.stayhub.app.ui.home;
 
 import android.os.Bundle;
 
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -10,18 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.stayhub.app.R;
+import com.stayhub.app.data.local.SessionManager;
+import com.stayhub.app.data.model.User;
 import com.stayhub.app.databinding.ActivityMainBinding;
+import com.stayhub.app.ui.admin.AdminFragment;
 import com.stayhub.app.ui.booking.MyBookingsFragment;
 import com.stayhub.app.ui.profile.ProfileFragment;
 
 /**
- * MainActivity: Điều hướng 3 tab chính (Home | Bookings | Profile)
+ * MainActivity: Điều hướng các tab chính (Home | Bookings | Admin [nếu là Admin] | Profile)
  */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private SessionManager sessionManager;
     private final HomeFragment homeFragment = new HomeFragment();
     private final MyBookingsFragment bookingsFragment = new MyBookingsFragment();
+    private final AdminFragment adminFragment = new AdminFragment();
     private final ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
@@ -30,12 +37,30 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        sessionManager = new SessionManager(this);
+
         // Mặc định nạp HomeFragment
         if (savedInstanceState == null) {
             loadFragment(homeFragment);
         }
 
         setupBottomNavigation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra quyền Admin khi quay lại màn hình chính
+        updateAdminMenuVisibility();
+    }
+
+    private void updateAdminMenuVisibility() {
+        User user = sessionManager.getUser();
+        boolean isAdmin = user != null && user.isAdmin();
+        MenuItem adminItem = binding.bottomNavigation.getMenu().findItem(R.id.navigation_admin);
+        if (adminItem != null) {
+            adminItem.setVisible(isAdmin);
+        }
     }
 
     private void setupBottomNavigation() {
@@ -46,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             return windowInsets;
         });
 
+        updateAdminMenuVisibility();
+
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
@@ -53,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (itemId == R.id.navigation_bookings) {
                 loadFragment(bookingsFragment);
+                return true;
+            } else if (itemId == R.id.navigation_admin) {
+                loadFragment(adminFragment);
                 return true;
             } else if (itemId == R.id.navigation_profile) {
                 loadFragment(profileFragment);

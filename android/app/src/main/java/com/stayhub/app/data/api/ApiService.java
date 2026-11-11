@@ -12,6 +12,7 @@ import com.stayhub.app.data.model.request.LoginRequest;
 import com.stayhub.app.data.model.request.RegisterRequest;
 import com.stayhub.app.data.model.request.ReviewRequest;
 import com.stayhub.app.data.model.request.SendOtpRequest;
+import com.stayhub.app.data.model.request.UpdateBookingStatusRequest;
 import com.stayhub.app.data.model.request.UpdateProfileRequest;
 import com.stayhub.app.data.model.request.VerifyOtpRequest;
 import com.stayhub.app.data.model.response.AuthResponse;
@@ -114,6 +115,21 @@ public interface ApiService {
             @Path("id") int id,
             @Query("page") Integer page,
             @Query("limit") Integer limit
+    );
+
+    // 6. Admin Endpoints
+    @GET("admin/bookings")
+    Call<ApiResponse<BookingListResponse>> getAdminBookings(
+            @Query("status") String status,
+            @Query("homestayId") Integer homestayId,
+            @Query("page") Integer page,
+            @Query("limit") Integer limit
+    );
+
+    @PATCH("bookings/{id}/status")
+    Call<ApiResponse<Booking>> updateBookingStatus(
+            @Path("id") int id,
+            @Body UpdateBookingStatusRequest request
     );
 }
 

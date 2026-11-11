@@ -9,6 +9,11 @@
         android:icon="@drawable/ic_calendar"
         android:title="@string/nav_bookings" />
     <item
+        android:id="@+id/navigation_admin"
+        android:icon="@drawable/ic_admin_panel"
+        android:title="@string/nav_admin"
+        android:visible="false" />
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person"
         android:title="@string/nav_profile" />

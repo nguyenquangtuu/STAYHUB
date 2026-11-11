@@ -7,6 +7,7 @@
     <!-- Navigation -->
     <string name="nav_home">Khám phá</string>
     <string name="nav_bookings">Đơn đặt</string>
+    <string name="nav_admin">Quản trị</string>
     <string name="nav_profile">Tài khoản</string>
 
     <!-- Auth -->
@@ -137,6 +138,29 @@
     <string name="confirm_logout_message">Bạn có chắc chắn muốn đăng xuất khỏi ứng dụng không?</string>
     <string name="role_customer">Khách hàng</string>
     <string name="role_admin">Quản trị viên</string>
+
+    <!-- Admin Management -->
+    <string name="admin_title">Trung tâm Quản trị</string>
+    <string name="admin_subtitle">Quản lý &amp; Duyệt đơn toàn hệ thống StayHub</string>
+    <string name="admin_stat_total">Tổng đơn</string>
+    <string name="admin_stat_pending">Cần duyệt</string>
+    <string name="admin_stat_revenue">Doanh thu</string>
+    <string name="admin_filter_all">Tất cả</string>
+    <string name="admin_filter_pending">Chờ duyệt</string>
+    <string name="admin_filter_confirmed">Đã duyệt</string>
+    <string name="admin_filter_completed">Hoàn thành</string>
+    <string name="admin_filter_cancelled">Đã hủy</string>
+    <string name="admin_btn_approve">Duyệt đơn</string>
+    <string name="admin_btn_reject">Từ chối</string>
+    <string name="admin_btn_complete">Hoàn thành</string>
+    <string name="admin_confirm_approve_title">Duyệt đơn đặt phòng</string>
+    <string name="admin_confirm_approve_msg">Bạn có chắc chắn muốn DUYỆT (CONFIRMED) đơn #%d không?</string>
+    <string name="admin_confirm_reject_title">Từ chối đơn đặt phòng</string>
+    <string name="admin_confirm_reject_msg">Bạn có chắc chắn muốn TỪ CHỐI (REJECTED) đơn #%d không?</string>
+    <string name="admin_confirm_complete_title">Hoàn tất kỳ nghỉ</string>
+    <string name="admin_confirm_complete_msg">Xác nhận đơn #%d đã hoàn tất kỳ nghỉ (COMPLETED)?</string>
+    <string name="admin_action_success">Đã cập nhật trạng thái đơn thành công</string>
+    <string name="admin_empty_bookings">Không có đơn đặt phòng nào trong mục này</string>
 
     <!-- General / States -->
     <string name="loading">Đang tải dữ liệu...</string>

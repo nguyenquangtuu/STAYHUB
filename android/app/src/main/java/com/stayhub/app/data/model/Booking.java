@@ -58,6 +58,16 @@ public class Booking implements Serializable {
     @SerializedName("homestay_address")
     private String homestayAddress;
 
+    // Thông tin khách đặt (Admin view)
+    @SerializedName("user_name")
+    private String userName;
+
+    @SerializedName("user_email")
+    private String userEmail;
+
+    @SerializedName("user_phone")
+    private String userPhone;
+
     // Review status nếu có
     @SerializedName("review_id")
     private Integer reviewId;
@@ -234,6 +244,30 @@ public class Booking implements Serializable {
     public boolean isActive() {
         return Constants.STATUS_PENDING.equalsIgnoreCase(status)
                 || Constants.STATUS_CONFIRMED.equalsIgnoreCase(status);
+    }
+
+    public String getUserName() {
+        return userName != null ? userName : "Khách hàng";
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 }
 
