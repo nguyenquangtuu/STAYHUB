@@ -146,9 +146,11 @@ class AuthService {
     };
   }
   /**
-   * Đăng ký tài khoản mới
+   * Đăng ký tài khoản mới cho người dùng
+   * Lưu ý an mật: Endpoint đăng ký công khai LUÔN LUÔN gán role = 'user',
+   * tuyệt đối không nhận role từ client để triệt tiêu hoàn toàn lỗ hổng Privilege Escalation.
    */
-  static async register({ fullName, email, password, phone = null, role = 'user' }) {
+  static async register({ fullName, email, password, phone = null }) {
     // 1. Kiểm tra email đã được đăng ký chưa
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
@@ -159,13 +161,13 @@ class AuthService {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    // 3. Lưu vào cơ sở dữ liệu
+    // 3. Lưu vào cơ sở dữ liệu (role mặc định luôn luôn là 'user')
     const newUserId = await UserModel.create({
       fullName,
       email,
       passwordHash,
       phone,
-      role
+      role: 'user'
     });
 
     // 4. Lấy thông tin user vừa tạo (không bao gồm password)

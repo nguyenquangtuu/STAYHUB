@@ -47,6 +47,14 @@ const completeRegistrationValidator = [
         throw new Error('Số điện thoại không đúng định dạng Việt Nam (10 chữ số, VD: 0912345678)');
       }
       return true;
+    }),
+
+  body('role')
+    .custom((val) => {
+      if (val !== undefined && val !== null) {
+        throw new Error('Không được phép tự chỉ định quyền hạn (role) trong yêu cầu đăng ký');
+      }
+      return true;
     })
 ];
 
@@ -62,6 +70,14 @@ const updateProfileValidator = [
     .custom((val) => {
       if (val && !VN_PHONE_REGEX.test(val.replace(/\s+/g, ''))) {
         throw new Error('Số điện thoại không đúng định dạng Việt Nam (10 chữ số, VD: 0912345678)');
+      }
+      return true;
+    }),
+
+  body('role')
+    .custom((val) => {
+      if (val !== undefined && val !== null) {
+        throw new Error('Không được phép tự chỉ định quyền hạn (role) trong yêu cầu đăng ký');
       }
       return true;
     })
@@ -94,8 +110,12 @@ const registerValidator = [
     }),
 
   body('role')
-    .optional()
-    .isIn(['user', 'admin']).withMessage('Quyền hạn chỉ có thể là user hoặc admin')
+    .custom((val) => {
+      if (val !== undefined && val !== null) {
+        throw new Error('Không được phép tự chỉ định quyền hạn (role) trong yêu cầu đăng ký');
+      }
+      return true;
+    })
 ];
 
 const loginValidator = [

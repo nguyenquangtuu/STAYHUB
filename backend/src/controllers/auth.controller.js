@@ -54,17 +54,17 @@ class AuthController {
   }
 
   /**
-   * Đăng ký tài khoản
+   * Đăng ký tài khoản người dùng
+   * (Chỉ trích xuất các trường hợp lệ, ngăn chặn Mass Assignment và leo thang đặc quyền)
    */
   static async register(req, res, next) {
     try {
-      const { full_name, email, password, phone, role } = req.body;
+      const { full_name, email, password, phone } = req.body;
       const result = await AuthService.register({
         fullName: full_name,
         email,
         password,
-        phone,
-        role
+        phone
       });
       return sendSuccess(res, result, 'Đăng ký tài khoản thành công', 201);
     } catch (error) {

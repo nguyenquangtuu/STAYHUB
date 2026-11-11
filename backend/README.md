@@ -176,7 +176,7 @@ Mật khẩu mặc định cho tất cả tài khoản mẫu là: **123456**
 ### 5.1 AUTHENTICATION
 | Method | Endpoint | Quyền hạn | Mô tả |
 | :--- | :--- | :--- | :--- |
-| POST | /api/auth/register | Public | Đăng ký tài khoản mới (user hoặc admin) |
+| POST | /api/auth/register | Public | Đăng ký tài khoản người dùng mới (mặc định quyền user) |
 | POST | /api/auth/login | Public | Đăng nhập hệ thống, trả về JWT Token |
 | GET | /api/auth/me | user / admin | Lấy thông tin tài khoản đang đăng nhập |
 
