@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_16"
+    android:layout_marginEnd="@dimen/spacing_16"
+    android:layout_marginBottom="@dimen/spacing_12"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="@dimen/spacing_12"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/outline"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_16">
+
+        <!-- User + Rating Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvAdminReviewAuthor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_body_medium"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="@dimen/spacing_4"
+                tools:text="Nguyễn Văn A" />
+
+            <TextView
+                android:id="@+id/tvAdminReviewRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/rating_star"
+                android:textSize="@dimen/text_size_body_small"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="@dimen/spacing_4"
+                tools:text="5 sao" />
+        </LinearLayout>
+
+        <!-- Date & Review ID -->
+        <TextView
+            android:id="@+id/tvAdminReviewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_4"
+            android:textColor="@color/text_tertiary"
+            android:textSize="@dimen/text_size_caption"
+            tools:text="Đánh giá #12 • 12/11/2026" />
+
+        <!-- Comment -->
+        <TextView
+            android:id="@+id/tvAdminReviewComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_8"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body_small"
+            tools:text="Phòng rất sạch sẽ, view ngắm hoàng hôn đỉnh chóp!" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_12"
+            android:layout_marginBottom="@dimen/spacing_8"
+            android:background="@color/divider" />
+
+        <!-- Action: Delete Review -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteReview"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xóa vi phạm"
+                android:textColor="@color/error"
+                app:cornerRadius="@dimen/spacing_8" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
