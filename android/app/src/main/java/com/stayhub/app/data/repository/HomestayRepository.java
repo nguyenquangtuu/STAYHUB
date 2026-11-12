@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.stayhub.app.data.model.ApiResponse;
 import com.stayhub.app.data.model.Homestay;
+import com.stayhub.app.data.model.request.HomestayRequest;
 import com.stayhub.app.data.model.response.HomestayListResponse;
 
 import retrofit2.Call;
@@ -57,6 +58,75 @@ public class HomestayRepository extends BaseRepository {
             @Override
             public void onFailure(@NonNull Call<ApiResponse<Homestay>> call, @NonNull Throwable t) {
                 callback.onError("Không thể tải chi tiết homestay: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void createHomestay(HomestayRequest request, ApiCallback<Homestay> callback) {
+        apiService.createHomestay(request).enqueue(new Callback<ApiResponse<Homestay>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Homestay>> call, @NonNull Response<ApiResponse<Homestay>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Homestay> apiResponse = response.body();
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        callback.onSuccess(apiResponse.getData(), apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Homestay>> call, @NonNull Throwable t) {
+                callback.onError("Không thể tạo homestay: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void updateHomestay(int homestayId, HomestayRequest request, ApiCallback<Homestay> callback) {
+        apiService.updateHomestay(homestayId, request).enqueue(new Callback<ApiResponse<Homestay>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Homestay>> call, @NonNull Response<ApiResponse<Homestay>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Homestay> apiResponse = response.body();
+                    if (apiResponse.isSuccess() && apiResponse.getData() != null) {
+                        callback.onSuccess(apiResponse.getData(), apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Homestay>> call, @NonNull Throwable t) {
+                callback.onError("Không thể cập nhật homestay: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    public void deleteHomestay(int homestayId, ApiCallback<Void> callback) {
+        apiService.deleteHomestay(homestayId).enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Void> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        callback.onSuccess(null, apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                callback.onError("Không thể xóa homestay: " + t.getLocalizedMessage());
             }
         });
     }

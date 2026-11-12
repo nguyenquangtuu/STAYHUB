@@ -62,5 +62,28 @@ public class ReviewRepository extends BaseRepository {
             }
         });
     }
+
+    public void deleteReview(int reviewId, ApiCallback<Void> callback) {
+        apiService.deleteReview(reviewId).enqueue(new Callback<ApiResponse<Void>>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResponse<Void>> call, @NonNull Response<ApiResponse<Void>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Void> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        callback.onSuccess(null, apiResponse.getMessage());
+                    } else {
+                        callback.onError(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError(parseErrorMessage(response));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResponse<Void>> call, @NonNull Throwable t) {
+                callback.onError("Không thể xóa đánh giá: " + t.getLocalizedMessage());
+            }
+        });
+    }
 }
 

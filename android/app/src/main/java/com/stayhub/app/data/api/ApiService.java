@@ -8,9 +8,11 @@ import com.stayhub.app.data.model.Room;
 import com.stayhub.app.data.model.User;
 import com.stayhub.app.data.model.request.BookingRequest;
 import com.stayhub.app.data.model.request.CompleteRegistrationRequest;
+import com.stayhub.app.data.model.request.HomestayRequest;
 import com.stayhub.app.data.model.request.LoginRequest;
 import com.stayhub.app.data.model.request.RegisterRequest;
 import com.stayhub.app.data.model.request.ReviewRequest;
+import com.stayhub.app.data.model.request.RoomRequest;
 import com.stayhub.app.data.model.request.SendOtpRequest;
 import com.stayhub.app.data.model.request.UpdateBookingStatusRequest;
 import com.stayhub.app.data.model.request.UpdateProfileRequest;
@@ -27,6 +29,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -79,9 +82,27 @@ public interface ApiService {
     @GET("homestays/{id}/rooms")
     Call<ApiResponse<List<Room>>> getHomestayRooms(@Path("id") int id);
 
+    @POST("homestays")
+    Call<ApiResponse<Homestay>> createHomestay(@Body HomestayRequest request);
+
+    @PUT("homestays/{id}")
+    Call<ApiResponse<Homestay>> updateHomestay(@Path("id") int id, @Body HomestayRequest request);
+
+    @DELETE("homestays/{id}")
+    Call<ApiResponse<Void>> deleteHomestay(@Path("id") int id);
+
     // 3. Room & Availability
     @GET("rooms/{id}")
     Call<ApiResponse<Room>> getRoomDetail(@Path("id") int id);
+
+    @POST("homestays/{id}/rooms")
+    Call<ApiResponse<Room>> createRoom(@Path("id") int homestayId, @Body RoomRequest request);
+
+    @PUT("rooms/{id}")
+    Call<ApiResponse<Room>> updateRoom(@Path("id") int id, @Body RoomRequest request);
+
+    @DELETE("rooms/{id}")
+    Call<ApiResponse<Void>> deleteRoom(@Path("id") int id);
 
     @GET("rooms/{id}/availability")
     Call<ApiResponse<AvailabilityResponse>> checkRoomAvailability(
@@ -116,6 +137,9 @@ public interface ApiService {
             @Query("page") Integer page,
             @Query("limit") Integer limit
     );
+
+    @DELETE("reviews/{id}")
+    Call<ApiResponse<Void>> deleteReview(@Path("id") int id);
 
     // 6. Admin Endpoints
     @GET("admin/bookings")
