@@ -161,6 +161,16 @@
     <string name="admin_confirm_complete_msg">Xác nhận đơn #%d đã hoàn tất kỳ nghỉ (COMPLETED)?</string>
     <string name="admin_action_success">Đã cập nhật trạng thái đơn thành công</string>
     <string name="admin_empty_bookings">Không có đơn đặt phòng nào trong mục này</string>
+    <string name="admin_empty_homestays">Chưa có Homestay nào trong hệ thống</string>
+    <string name="admin_empty_rooms">Homestay này chưa có phòng nào</string>
+    <string name="admin_empty_reviews">Chưa có đánh giá nào cho homestay này</string>
+    <string name="admin_select_homestay_hint">Chọn Homestay quản lý:</string>
+    <string name="admin_btn_add_homestay">+ Thêm Homestay</string>
+    <string name="admin_btn_add_room">+ Thêm Phòng</string>
+    <string name="admin_section_bookings">Đơn đặt</string>
+    <string name="admin_section_homestays">Homestay</string>
+    <string name="admin_section_rooms">Phòng nghỉ</string>
+    <string name="admin_section_reviews">Đánh giá</string>
 
     <!-- General / States -->
     <string name="loading">Đang tải dữ liệu...</string>

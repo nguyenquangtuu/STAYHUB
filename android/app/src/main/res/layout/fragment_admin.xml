@@ -1,264 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical">
+    android:background="@color/background">
 
-    <!-- Header & Stats Container -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface"
-        android:elevation="3dp"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/spacing_16"
-        android:paddingTop="@dimen/spacing_16"
-        android:paddingEnd="@dimen/spacing_16"
-        android:paddingBottom="@dimen/spacing_8">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Title & Subtitle -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/admin_title"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/text_size_headline_small"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_2"
-            android:text="@string/admin_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="@dimen/text_size_caption" />
-
-        <!-- 3 Thẻ thống kê tổng quan (Admin Stats) -->
+        <!-- Header & Section Selector Container -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_12"
-            android:orientation="horizontal">
+            android:background="@color/surface"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/spacing_16"
+            android:paddingTop="@dimen/spacing_16"
+            android:paddingEnd="@dimen/spacing_16"
+            android:paddingBottom="@dimen/spacing_8">
 
-            <!-- Card 1: Tổng đơn -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
+            <!-- Title & Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/spacing_4"
-                app:cardBackgroundColor="@color/primary_container"
-                app:cardCornerRadius="@dimen/spacing_8"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
+                android:text="@string/admin_title"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_headline_small"
+                android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_2"
+                android:text="@string/admin_subtitle"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_caption" />
+
+            <!-- 4 Phân hệ Quản trị (Sections Chips) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupAdminSections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSectionBookings"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/admin_section_bookings"
+                        app:chipIcon="@drawable/ic_calendar" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSectionHomestays"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_section_homestays"
+                        app:chipIcon="@drawable/ic_home" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSectionRooms"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_section_rooms"
+                        app:chipIcon="@drawable/ic_hotel" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSectionReviews"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_section_reviews"
+                        app:chipIcon="@drawable/ic_star" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <!-- Container Thống kê & Lọc cho Đơn đặt (Booking Stats & Filters) -->
+            <LinearLayout
+                android:id="@+id/layoutBookingStatsAndFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <!-- 3 Thẻ thống kê tổng quan (Admin Stats) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_8">
+                    android:layout_marginTop="@dimen/spacing_8"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Card 1: Tổng đơn -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/admin_stat_total"
-                        android:textColor="@color/on_primary_container"
-                        android:textSize="11sp" />
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/spacing_4"
+                        app:cardBackgroundColor="@color/primary_container"
+                        app:cardCornerRadius="@dimen/spacing_8"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp">
 
-                    <TextView
-                        android:id="@+id/tvStatTotalBookings"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_8">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/admin_stat_total"
+                                android:textColor="@color/on_primary_container"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tvStatTotalBookings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_2"
+                                android:textColor="@color/primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="12" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card 2: Chờ duyệt (Pending) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_2"
-                        android:textColor="@color/primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="12" />
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/spacing_4"
+                        android:layout_marginEnd="@dimen/spacing_4"
+                        app:cardBackgroundColor="@color/status_pending_bg"
+                        app:cardCornerRadius="@dimen/spacing_8"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_8">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/admin_stat_pending"
+                                android:textColor="@color/status_pending"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvStatPendingBookings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_2"
+                                android:textColor="@color/status_pending"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="3" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card 3: Doanh thu (Revenue) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.2"
+                        android:layout_marginStart="@dimen/spacing_4"
+                        app:cardBackgroundColor="@color/status_completed_bg"
+                        app:cardCornerRadius="@dimen/spacing_8"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_8">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/admin_stat_revenue"
+                                android:textColor="@color/status_completed"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tvStatRevenue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_2"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/status_completed"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                tools:text="14.2M đ" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 2: Chờ duyệt (Pending) -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/spacing_4"
-                android:layout_marginEnd="@dimen/spacing_4"
-                app:cardBackgroundColor="@color/status_pending_bg"
-                app:cardCornerRadius="@dimen/spacing_8"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
+                <!-- TabLayout Bộ lọc trạng thái đơn booking -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayoutAdmin"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_8">
+                    android:layout_height="44dp"
+                    android:layout_marginTop="@dimen/spacing_8"
+                    android:background="@android:color/transparent"
+                    app:tabIndicatorColor="@color/primary"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/primary"
+                    app:tabTextAppearance="@style/TextAppearance.Material3.LabelMedium"
+                    app:tabTextColor="@color/text_secondary">
 
-                    <TextView
+                    <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/admin_stat_pending"
-                        android:textColor="@color/status_pending"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:text="@string/admin_filter_all" />
 
-                    <TextView
-                        android:id="@+id/tvStatPendingBookings"
+                    <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_2"
-                        android:textColor="@color/status_pending"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        tools:text="3" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:text="@string/admin_filter_pending" />
 
-            <!-- Card 3: Doanh thu (Revenue) -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_filter_confirmed" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_filter_completed" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_filter_cancelled" />
+                </com.google.android.material.tabs.TabLayout>
+            </LinearLayout>
+
+            <!-- Container Chọn Homestay (dành cho Phòng và Đánh giá) -->
+            <LinearLayout
+                android:id="@+id/layoutHomestaySelector"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:layout_marginStart="@dimen/spacing_4"
-                app:cardBackgroundColor="@color/status_completed_bg"
-                app:cardCornerRadius="@dimen/spacing_8"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
+                android:layout_marginTop="@dimen/spacing_8"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_8">
+                    android:text="@string/admin_select_homestay_hint"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body_small"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/admin_stat_revenue"
-                        android:textColor="@color/status_completed"
-                        android:textSize="11sp" />
+                <Spinner
+                    android:id="@+id/spinnerAdminHomestay"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="@dimen/spacing_8"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvStatRevenue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_2"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/status_completed"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:text="14.2M đ" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- TabLayout Bộ lọc trạng thái (Scrollable) -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayoutAdmin"
+        <!-- Content: SwipeRefreshLayout + 4 RecyclerViews -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshAdmin"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="@dimen/spacing_8"
-            android:background="@android:color/transparent"
-            app:tabIndicatorColor="@color/primary"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/primary"
-            app:tabTextAppearance="@style/TextAppearance.Material3.LabelMedium"
-            app:tabTextColor="@color/text_secondary">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/admin_filter_all" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/admin_filter_pending" />
+                <!-- 1. Danh sách đơn đặt phòng -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdminBookings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="@dimen/spacing_12"
+                    android:paddingBottom="@dimen/spacing_16"
+                    tools:listitem="@layout/item_admin_booking" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/admin_filter_confirmed" />
+                <!-- 2. Danh sách Quản lý Homestay -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdminHomestays"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="@dimen/spacing_12"
+                    android:paddingBottom="@dimen/spacing_80"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_admin_homestay" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/admin_filter_completed" />
+                <!-- 3. Danh sách Quản lý Phòng -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdminRooms"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="@dimen/spacing_12"
+                    android:paddingBottom="@dimen/spacing_80"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_admin_room" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/admin_filter_cancelled" />
-        </com.google.android.material.tabs.TabLayout>
+                <!-- 4. Danh sách Quản lý Đánh giá -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdminReviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="@dimen/spacing_12"
+                    android:paddingBottom="@dimen/spacing_16"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_admin_review" />
+
+                <!-- Trạng thái trống (Empty State) -->
+                <LinearLayout
+                    android:id="@+id/layoutAdminEmpty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_24"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/ivAdminEmptyIcon"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/text_tertiary" />
+
+                    <TextView
+                        android:id="@+id/tvAdminEmpty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_12"
+                        android:text="@string/admin_empty_bookings"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body_medium" />
+                </LinearLayout>
+
+                <!-- Loading Progress Bar -->
+                <ProgressBar
+                    android:id="@+id/progressAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/primary"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
-    <!-- Content: SwipeRefreshLayout + RecyclerView -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshAdmin"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <!-- Nút Floating Thêm mới (Homestay / Phòng) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAdminAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/spacing_16"
+        android:layout_marginBottom="@dimen/spacing_16"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/on_primary"
+        android:text="@string/admin_btn_add_homestay"
+        app:icon="@drawable/ic_edit"
+        app:iconTint="@color/on_primary"
+        android:visibility="gone" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- Danh sách đơn đặt phòng -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAdminBookings"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingTop="@dimen/spacing_12"
-                android:paddingBottom="@dimen/spacing_16"
-                tools:listitem="@layout/item_admin_booking" />
-
-            <!-- Trạng thái trống (Empty State) -->
-            <LinearLayout
-                android:id="@+id/layoutAdminEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_24"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_calendar"
-                    app:tint="@color/text_tertiary" />
-
-                <TextView
-                    android:id="@+id/tvAdminEmpty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_12"
-                    android:text="@string/admin_empty_bookings"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/text_size_body_medium" />
-            </LinearLayout>
-
-            <!-- Loading Progress Bar -->
-            <ProgressBar
-                android:id="@+id/progressAdmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/primary"
-                android:visibility="gone" />
-
-        </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-</LinearLayout>
-
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

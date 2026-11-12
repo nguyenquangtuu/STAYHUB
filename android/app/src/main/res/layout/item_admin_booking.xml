@@ -35,7 +35,6 @@
                 android:textSize="@dimen/text_size_caption"
                 android:textStyle="bold"
                 tools:text="Mã đơn: #101" />
-
             <TextView
                 android:id="@+id/tvAdminBookingStatus"
                 android:layout_width="wrap_content"
