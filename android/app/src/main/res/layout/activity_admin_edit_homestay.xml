@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- AppBar & Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:elevation="4dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarAdminEditHomestay"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/text_primary"
+            app:title="Chỉnh sửa Homestay"
+            app:titleTextColor="@color/text_primary"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main Content Scroll -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_16">
+
+            <!-- SECTION 1: HÌNH ẢNH HOMESTAY -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. Hình ảnh bìa Homestay"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_title_medium"
+                android:textStyle="bold" />
+
+            <!-- Khung xem trước ảnh Preview -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:cardCornerRadius="@dimen/spacing_12"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/outline"
+                app:strokeWidth="1dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ivHomestayPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg_image_placeholder"
+                        android:contentDescription="Ảnh homestay" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="@dimen/spacing_8"
+                        android:background="@color/surface"
+                        android:paddingHorizontal="@dimen/spacing_8"
+                        android:paddingVertical="@dimen/spacing_4"
+                        android:text="Xem trước"
+                        android:textColor="@color/primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Bộ sưu tập ảnh mẫu nghỉ dưỡng chọn nhanh -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:text="Chọn nhanh từ bộ sưu tập ảnh mẫu đẹp:"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body_small" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/layoutPresetImages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Sẽ add các preset thumbnail bằng code hoặc cố định -->
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Nhập URL ảnh tùy chỉnh -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHomestayImageUrl"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                android:hint="Hoặc dán URL ảnh trực tuyến">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHomestayImageUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:background="@color/divider" />
+
+            <!-- SECTION 2: THÔNG TIN CƠ BẢN -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. Thông tin cơ bản"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_title_medium"
+                android:textStyle="bold" />
+
+            <!-- Tên Homestay -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHomestayName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:hint="Tên Homestay *">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHomestayName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Giới thiệu / Mô tả -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHomestayDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:hint="Mô tả chi tiết về Homestay">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHomestayDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:lines="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:background="@color/divider" />
+
+            <!-- SECTION 3: VỊ TRÍ & ĐỊA CHỈ (SELECT ĐỊA CHỈ CHUẨN) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. Địa điểm &amp; Vị trí"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_title_medium"
+                android:textStyle="bold" />
+
+            <!-- Chọn Tỉnh / Thành phố -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:text="Tỉnh / Thành phố *"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_caption"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerCity"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/spacing_4" />
+
+            <!-- Chọn Quận / Huyện / Khu vực -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:text="Quận / Huyện / Khu vực *"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_caption"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="@dimen/spacing_4" />
+
+            <!-- Số nhà & Tên đường chi tiết -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStreetAddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_12"
+                android:hint="Số nhà, tên đường, thôn xóm *">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStreetAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Thẻ xem trước địa chỉ hoàn chỉnh -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:cardBackgroundColor="@color/surface_variant"
+                app:cardCornerRadius="@dimen/spacing_8"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/spacing_12">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_location"
+                        app:tint="@color/primary"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/tvFullAddressPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_8"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_body_small"
+                        tools:text="Địa chỉ: 88 Võ Nguyên Giáp, Phường Phước Mỹ, Quận Sơn Trà, TP. Đà Nẵng" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_16"
+                android:layout_marginBottom="@dimen/spacing_16"
+                android:background="@color/divider" />
+
+            <!-- SECTION 4: TIỆN ÍCH NỔI BẬT (AMENITIES CHIPS) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. Tiện ích nổi bật (Chọn nhanh)"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_size_title_medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_4"
+                android:text="Chạm vào các tiện ích để kích hoạt cho homestay này:"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body_small" />
+
+            <!-- ChipGroup Tiện ích -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupAmenities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_8"
+                app:chipSpacingHorizontal="@dimen/spacing_8"
+                app:chipSpacingVertical="@dimen/spacing_4">
+
+                <!-- 10 Tiện ích phổ biến với Icon -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityWifi"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📶 Wifi tốc độ cao" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityPool"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🏊 Hồ bơi" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityAc"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="❄️ Điều hòa" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityKitchen"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🍳 Bếp nấu ăn" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityParking"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🅿️ Chỗ đỗ xe" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityBalcony"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌅 Ban công view đẹp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityBbq"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🍖 Bếp nướng BBQ" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityBeach"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌊 Sát biển" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityWasher"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🧺 Máy giặt" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAmenityPet"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🐶 Thú cưng" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Nút Lưu Homestay -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveHomestay"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/spacing_24"
+                android:layout_marginBottom="@dimen/spacing_32"
+                android:backgroundTint="@color/primary"
+                android:text="LƯU THÔNG TIN HOMESTAY"
+                android:textColor="@color/on_primary"
+                android:textSize="@dimen/text_size_title_medium"
+                android:textStyle="bold"
+                app:cornerRadius="@dimen/spacing_12"
+                app:icon="@drawable/ic_check_circle"
+                app:iconGravity="textStart"
+                app:iconTint="@color/on_primary" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Progress Indicator Overlay -->
+    <FrameLayout
+        android:id="@+id/layoutLoadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/on_primary" />
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

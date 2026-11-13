@@ -73,6 +73,12 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Quản trị viên: Thêm / Chỉnh sửa Homestay -->
+        <activity
+            android:name=".ui.admin.AdminEditHomestayActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

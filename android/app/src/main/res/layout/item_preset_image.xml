@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="70dp"
+    android:layout_marginEnd="@dimen/spacing_8"
+    app:cardCornerRadius="@dimen/spacing_8"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/outline"
+    app:strokeWidth="1dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivPresetThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="@null"
+            tools:src="@drawable/bg_image_placeholder" />
+
+        <TextView
+            android:id="@+id/tvPresetLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#99000000"
+            android:gravity="center"
+            android:paddingVertical="@dimen/spacing_2"
+            android:textColor="@color/on_primary"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="Đà Lạt" />
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>
