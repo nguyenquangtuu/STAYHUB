@@ -39,6 +39,7 @@ public class BookingActivity extends AppCompatActivity {
     private String selectedCheckInDate;
     private String selectedCheckOutDate;
     private boolean isRoomAvailable = false;
+    private int guestCount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,12 @@ public class BookingActivity extends AppCompatActivity {
         binding.etCheckIn.setText(DateUtils.toDisplayDate(selectedCheckInDate));
         binding.etCheckOut.setText(DateUtils.toDisplayDate(selectedCheckOutDate));
 
+        // Khởi tạo bộ đếm số lượng khách
+        guestCount = 1;
+        binding.tvGuestCount.setText(String.valueOf(guestCount));
+        binding.tvGuestCapacityHint.setText(String.format("Sức chứa tối đa: %d khách", capacity));
+        updateGuestStepperButtons();
+
         updateCalculation();
     }
 
@@ -137,40 +144,36 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        binding.etGuests.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int count, int after) {
-                validateGuests();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
+        setupGuestStepper();
         binding.btnConfirmBooking.setOnClickListener(v -> performBooking());
     }
 
-    private boolean validateGuests() {
-        String guestsStr = binding.etGuests.getText() != null ? binding.etGuests.getText().toString().trim() : "1";
-        try {
-            int guests = Integer.parseInt(guestsStr);
-            if (guests <= 0) {
-                binding.tilGuests.setError("Số khách tối thiểu là 1");
-                return false;
+    private void setupGuestStepper() {
+        binding.btnDecreaseGuests.setOnClickListener(v -> {
+            if (guestCount > 1) {
+                guestCount--;
+                binding.tvGuestCount.setText(String.valueOf(guestCount));
+                updateGuestStepperButtons();
             }
-            if (guests > capacity) {
-                binding.tilGuests.setError(String.format(getString(R.string.error_exceed_capacity), capacity));
-                return false;
+        });
+
+        binding.btnIncreaseGuests.setOnClickListener(v -> {
+            if (guestCount < capacity) {
+                guestCount++;
+                binding.tvGuestCount.setText(String.valueOf(guestCount));
+                updateGuestStepperButtons();
+            } else {
+                Toast.makeText(this, String.format("Phòng này tối đa %d khách", capacity), Toast.LENGTH_SHORT).show();
             }
-            binding.tilGuests.setError(null);
-            return true;
-        } catch (NumberFormatException e) {
-            binding.tilGuests.setError("Vui lòng nhập số hợp lệ");
-            return false;
-        }
+        });
+    }
+
+    private void updateGuestStepperButtons() {
+        binding.btnDecreaseGuests.setEnabled(guestCount > 1);
+        binding.btnDecreaseGuests.setAlpha(guestCount > 1 ? 1.0f : 0.4f);
+
+        binding.btnIncreaseGuests.setEnabled(guestCount < capacity);
+        binding.btnIncreaseGuests.setAlpha(guestCount < capacity ? 1.0f : 0.4f);
     }
 
     private void updateCalculation() {
@@ -214,18 +217,12 @@ public class BookingActivity extends AppCompatActivity {
      * Gọi API POST /api/bookings xác nhận đặt phòng
      */
     private void performBooking() {
-        if (!validateGuests()) return;
-
         if (!isRoomAvailable) {
             Toast.makeText(this, getString(R.string.room_not_available), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int guests = 1;
-        try {
-            guests = Integer.parseInt(binding.etGuests.getText().toString().trim());
-        } catch (Exception ignored) {}
-
+        int guests = guestCount;
         String note = binding.etNote.getText() != null ? binding.etNote.getText().toString().trim() : null;
 
         bookingViewModel.createBooking(roomId, selectedCheckInDate, selectedCheckOutDate, guests, note);

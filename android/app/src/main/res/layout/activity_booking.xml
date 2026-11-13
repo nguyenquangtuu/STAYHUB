@@ -168,27 +168,106 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <!-- Số lượng khách -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilGuests"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            <!-- Số lượng khách (Bộ tăng giảm +/- tiện lợi) -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_16"
-                android:hint="@string/label_guests"
-                app:boxStrokeColor="@color/primary"
-                app:startIconDrawable="@drawable/ic_person"
-                app:startIconTint="@color/text_secondary">
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:strokeColor="@color/outline"
+                app:strokeWidth="1dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/surface">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etGuests"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="1"
-                    android:textColor="@color/text_primary"
-                    android:textSize="@dimen/text_size_body_medium" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/spacing_16"
+                    android:paddingTop="@dimen/spacing_12"
+                    android:paddingEnd="@dimen/spacing_16"
+                    android:paddingBottom="@dimen/spacing_12">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/primary" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_12"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_guests"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/text_size_body_medium"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvGuestCapacityHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tối đa 2 khách"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="@dimen/text_size_caption" />
+                    </LinearLayout>
+
+                    <!-- Bộ điều khiển tăng giảm +/- -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDecreaseGuests"
+                            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:contentDescription="Giảm số khách"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:insetLeft="0dp"
+                            android:insetRight="0dp"
+                            app:icon="@drawable/ic_minus"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconTint="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/tvGuestCount"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/text_size_title_medium"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnIncreaseGuests"
+                            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:contentDescription="Tăng số khách"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:insetLeft="0dp"
+                            android:insetRight="0dp"
+                            app:icon="@drawable/ic_plus"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconTint="@color/primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Ghi chú đặc biệt -->
             <com.google.android.material.textfield.TextInputLayout
