@@ -2,6 +2,7 @@ package com.stayhub.app.ui.homestay;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -162,7 +163,7 @@ public class HomestayDetailActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(binding.imgDetailHomestay);
 
-        // Hiển thị Chips tiện ích
+        // Hiển thị Chips tiện ích gọn gàng và thẩm mỹ
         binding.chipGroupAmenities.removeAllViews();
         List<String> displayAmenities = homestay.getDisplayAmenities();
         if (displayAmenities != null && !displayAmenities.isEmpty()) {
@@ -170,8 +171,22 @@ public class HomestayDetailActivity extends AppCompatActivity {
                 Chip chip = new Chip(this);
                 chip.setText(getAmenityDisplayName(amenity));
                 chip.setClickable(false);
+                chip.setCheckable(false);
+                chip.setEnsureMinTouchTargetSize(false);
+                chip.setChipMinHeightResource(R.dimen.chip_height);
+                chip.setChipCornerRadiusResource(R.dimen.chip_corner_radius);
                 chip.setChipBackgroundColorResource(R.color.surface_variant);
                 chip.setTextColor(getColor(R.color.text_primary));
+                chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+
+                int iconRes = getAmenityIcon(amenity);
+                if (iconRes != 0) {
+                    chip.setChipIconResource(iconRes);
+                    chip.setChipIconTintResource(R.color.primary);
+                    chip.setChipIconSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()));
+                    chip.setChipIconVisible(true);
+                }
+
                 binding.chipGroupAmenities.addView(chip);
             }
         }
@@ -187,18 +202,35 @@ public class HomestayDetailActivity extends AppCompatActivity {
         }
     }
 
+    private int getAmenityIcon(String rawAmenity) {
+        if (rawAmenity == null) return R.drawable.ic_check_circle;
+        switch (rawAmenity.toLowerCase().trim()) {
+            case "wifi": return R.drawable.ic_wifi;
+            case "parking": return R.drawable.ic_parking;
+            case "kitchen": return R.drawable.ic_kitchen;
+            case "pool": return R.drawable.ic_pool;
+            case "air_conditioning": return R.drawable.ic_hotel;
+            case "beach_front":
+            case "mountain_view":
+            case "garden":
+            case "balcony":
+                return R.drawable.ic_location;
+            default: return R.drawable.ic_check_circle;
+        }
+    }
+
     private String getAmenityDisplayName(String rawAmenity) {
         switch (rawAmenity.toLowerCase().trim()) {
             case "wifi": return "Wifi tốc độ cao";
-            case "parking": return "Bãi đỗ xe miễn phí";
-            case "kitchen": return "Bếp nấu gia đình";
+            case "parking": return "Bãi đỗ xe";
+            case "kitchen": return "Bếp nấu";
             case "air_conditioning": return "Điều hòa";
             case "pool": return "Hồ bơi";
             case "mountain_view": return "View núi";
-            case "beach_front": return "Sát bờ biển";
-            case "bbq": return "Tiệc nướng BBQ";
-            case "garden": return "Sân vườn thoáng mát";
-            case "balcony": return "Ban công view đẹp";
+            case "beach_front": return "Sát biển";
+            case "bbq": return "Bếp nướng BBQ";
+            case "garden": return "Sân vườn";
+            case "balcony": return "Ban công";
             default: return rawAmenity;
         }
     }
