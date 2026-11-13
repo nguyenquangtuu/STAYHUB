@@ -75,3 +75,4 @@ public class HomestayRequest implements Serializable {
         this.amenities = amenities;
     }
 }
+

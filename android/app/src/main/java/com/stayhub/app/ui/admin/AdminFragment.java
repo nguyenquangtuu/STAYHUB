@@ -1,5 +1,6 @@
 package com.stayhub.app.ui.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -31,7 +34,6 @@ import com.stayhub.app.data.repository.ApiCallback;
 import com.stayhub.app.data.repository.HomestayRepository;
 import com.stayhub.app.data.repository.ReviewRepository;
 import com.stayhub.app.data.repository.RoomRepository;
-import com.stayhub.app.databinding.DialogAdminHomestayBinding;
 import com.stayhub.app.databinding.DialogAdminRoomBinding;
 import com.stayhub.app.databinding.FragmentAdminBinding;
 import com.stayhub.app.util.Constants;
@@ -76,6 +78,15 @@ public class AdminFragment extends Fragment {
     private final List<Homestay> homestayList = new ArrayList<>();
     private Homestay selectedHomestay = null;
     private int selectedBookingTabPosition = 0; // 0: Tất cả, 1: PENDING, 2: CONFIRMED, 3: COMPLETED, 4: CANCELLED
+
+    private final ActivityResultLauncher<Intent> editHomestayLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == android.app.Activity.RESULT_OK) {
+                    loadHomestays();
+                }
+            }
+    );
 
     @Nullable
     @Override
@@ -132,7 +143,7 @@ public class AdminFragment extends Fragment {
         homestayAdapter = new AdminHomestayAdapter(new AdminHomestayAdapter.OnHomestayActionListener() {
             @Override
             public void onEdit(Homestay homestay) {
-                showAddOrEditHomestayDialog(homestay);
+                openEditHomestayActivity(homestay);
             }
 
             @Override
@@ -247,7 +258,7 @@ public class AdminFragment extends Fragment {
     private void setupFab() {
         binding.fabAdminAdd.setOnClickListener(v -> {
             if (currentSection == Section.HOMESTAYS) {
-                showAddOrEditHomestayDialog(null);
+                openEditHomestayActivity(null);
             } else if (currentSection == Section.ROOMS) {
                 if (selectedHomestay == null) {
                     Toast.makeText(requireContext(), "Vui lòng chọn hoặc thêm homestay trước!", Toast.LENGTH_SHORT).show();
@@ -468,90 +479,12 @@ public class AdminFragment extends Fragment {
         }
     }
 
-    private void showAddOrEditHomestayDialog(@Nullable Homestay homestay) {
-        DialogAdminHomestayBinding dialogBinding = DialogAdminHomestayBinding.inflate(getLayoutInflater());
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setView(dialogBinding.getRoot())
-                .create();
-
-        boolean isEdit = homestay != null;
-        dialogBinding.tvDialogHomestayTitle.setText(isEdit ? "Chỉnh sửa Homestay" : "Thêm Homestay Mới");
-
-        if (isEdit) {
-            dialogBinding.etHomestayName.setText(homestay.getName());
-            dialogBinding.etHomestayCity.setText(homestay.getCity());
-            dialogBinding.etHomestayAddress.setText(homestay.getAddress());
-            dialogBinding.etHomestayDescription.setText(homestay.getDescription());
-            if (homestay.getAmenities() != null && !homestay.getAmenities().isEmpty()) {
-                dialogBinding.etHomestayAmenities.setText(TextUtils.join(", ", homestay.getAmenities()));
-            }
+    private void openEditHomestayActivity(@Nullable Homestay homestay) {
+        Intent intent = new Intent(requireContext(), AdminEditHomestayActivity.class);
+        if (homestay != null) {
+            intent.putExtra(AdminEditHomestayActivity.EXTRA_HOMESTAY, homestay);
         }
-
-        dialogBinding.btnCancelHomestay.setOnClickListener(v -> dialog.dismiss());
-        dialogBinding.btnSaveHomestay.setOnClickListener(v -> {
-            String name = dialogBinding.etHomestayName.getText() != null ? dialogBinding.etHomestayName.getText().toString().trim() : "";
-            String city = dialogBinding.etHomestayCity.getText() != null ? dialogBinding.etHomestayCity.getText().toString().trim() : "";
-            String address = dialogBinding.etHomestayAddress.getText() != null ? dialogBinding.etHomestayAddress.getText().toString().trim() : "";
-            String desc = dialogBinding.etHomestayDescription.getText() != null ? dialogBinding.etHomestayDescription.getText().toString().trim() : "";
-            String amenitiesRaw = dialogBinding.etHomestayAmenities.getText() != null ? dialogBinding.etHomestayAmenities.getText().toString().trim() : "";
-
-            if (TextUtils.isEmpty(name)) {
-                dialogBinding.tilHomestayName.setError("Vui lòng nhập tên homestay");
-                return;
-            }
-            if (TextUtils.isEmpty(city)) {
-                dialogBinding.tilHomestayCity.setError("Vui lòng nhập thành phố");
-                return;
-            }
-            if (TextUtils.isEmpty(address)) {
-                dialogBinding.tilHomestayAddress.setError("Vui lòng nhập địa chỉ");
-                return;
-            }
-
-            List<String> amenities = new ArrayList<>();
-            if (!TextUtils.isEmpty(amenitiesRaw)) {
-                String[] parts = amenitiesRaw.split(",");
-                for (String p : parts) {
-                    if (!p.trim().isEmpty()) amenities.add(p.trim());
-                }
-            }
-
-            HomestayRequest request = new HomestayRequest(name, city, address, desc, amenities);
-            binding.progressAdmin.setVisibility(View.VISIBLE);
-            dialog.dismiss();
-
-            if (isEdit) {
-                homestayRepository.updateHomestay(homestay.getId(), request, new ApiCallback<Homestay>() {
-                    @Override
-                    public void onSuccess(Homestay data, String message) {
-                        Toast.makeText(requireContext(), "Cập nhật homestay thành công!", Toast.LENGTH_SHORT).show();
-                        loadHomestays();
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        binding.progressAdmin.setVisibility(View.GONE);
-                        Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                homestayRepository.createHomestay(request, new ApiCallback<Homestay>() {
-                    @Override
-                    public void onSuccess(Homestay data, String message) {
-                        Toast.makeText(requireContext(), "Tạo homestay thành công!", Toast.LENGTH_SHORT).show();
-                        loadHomestays();
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        binding.progressAdmin.setVisibility(View.GONE);
-                        Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
-        dialog.show();
+        editHomestayLauncher.launch(intent);
     }
 
     private void showDeleteHomestayDialog(Homestay homestay) {

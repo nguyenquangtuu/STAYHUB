@@ -74,3 +74,4 @@ public class RoomRequest implements Serializable {
         this.status = status;
     }
 }
+
