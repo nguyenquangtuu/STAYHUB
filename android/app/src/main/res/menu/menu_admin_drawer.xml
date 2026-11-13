@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_admin_bookings"
+            android:icon="@drawable/ic_calendar"
+            android:checked="true"
+            android:title="Quản lý Đơn đặt phòng" />
+
+        <item
+            android:id="@+id/nav_admin_branches"
+            android:icon="@drawable/ic_home"
+            android:title="Quản lý Chi nhánh" />
+
+        <item
+            android:id="@+id/nav_admin_rooms"
+            android:icon="@drawable/ic_hotel"
+            android:title="Quản lý Phòng nghỉ" />
+
+        <item
+            android:id="@+id/nav_admin_reviews"
+            android:icon="@drawable/ic_star"
+            android:title="Quản lý Đánh giá" />
+    </group>
+</menu>
+

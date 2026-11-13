@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -102,7 +103,7 @@ public class AdminFragment extends Fragment {
         bookingViewModel = new ViewModelProvider(this).get(BookingViewModel.class);
 
         setupAdapters();
-        setupSectionChips();
+        setupAdminDrawerNavigation();
         setupBookingTabLayout();
         setupHomestaySpinner();
         setupFab();
@@ -180,22 +181,36 @@ public class AdminFragment extends Fragment {
         binding.rvAdminReviews.setAdapter(reviewAdapter);
     }
 
-    private void setupSectionChips() {
-        binding.chipGroupAdminSections.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.isEmpty()) return;
-            int checkedId = checkedIds.get(0);
-
-            if (checkedId == R.id.chipSectionBookings) {
-                currentSection = Section.BOOKINGS;
-            } else if (checkedId == R.id.chipSectionHomestays) {
-                currentSection = Section.HOMESTAYS;
-            } else if (checkedId == R.id.chipSectionRooms) {
-                currentSection = Section.ROOMS;
-            } else if (checkedId == R.id.chipSectionReviews) {
-                currentSection = Section.REVIEWS;
+    private void setupAdminDrawerNavigation() {
+        binding.btnOpenAdminMenu.setOnClickListener(v -> {
+            if (binding.adminDrawerLayout != null) {
+                binding.adminDrawerLayout.openDrawer(GravityCompat.START);
             }
+        });
+
+        binding.adminNavigationView.setNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_admin_bookings) {
+                currentSection = Section.BOOKINGS;
+                binding.tvAdminSectionTitle.setText("Quản lý Đơn đặt phòng");
+                binding.tvAdminSectionSubtitle.setText("Duyệt và theo dõi đơn toàn hệ thống StayHub");
+            } else if (itemId == R.id.nav_admin_branches) {
+                currentSection = Section.HOMESTAYS;
+                binding.tvAdminSectionTitle.setText("Quản lý Chi nhánh");
+                binding.tvAdminSectionSubtitle.setText("Danh sách các cơ sở / chi nhánh của chuỗi StayHub");
+            } else if (itemId == R.id.nav_admin_rooms) {
+                currentSection = Section.ROOMS;
+                binding.tvAdminSectionTitle.setText("Quản lý Phòng nghỉ");
+                binding.tvAdminSectionSubtitle.setText("Cơ cấu và bảng giá phòng theo từng chi nhánh");
+            } else if (itemId == R.id.nav_admin_reviews) {
+                currentSection = Section.REVIEWS;
+                binding.tvAdminSectionTitle.setText("Quản lý Đánh giá");
+                binding.tvAdminSectionSubtitle.setText("Kiểm duyệt phản hồi và khiếu nại của khách hàng");
+            }
+            binding.adminDrawerLayout.closeDrawer(GravityCompat.START);
             updateSectionVisibility();
             loadCurrentSectionData();
+            return true;
         });
     }
 
