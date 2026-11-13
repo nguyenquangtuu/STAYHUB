@@ -32,11 +32,11 @@ CREATE TABLE `users` (
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 2. BẢNG HOMESTAYS (Căn hộ / Nhà nghỉ homestay)
+-- 2. BẢNG HOMESTAYS (Các Chi nhánh / Cơ sở thuộc Chuỗi Homestay StayHub)
 CREATE TABLE `homestays` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `owner_id` INT NOT NULL,
-  `name` VARCHAR(200) NOT NULL,
+  `owner_id` INT NOT NULL, -- ID của Tổng Quản Trị Viên (Admin) quản lý chuỗi StayHub
+  `name` VARCHAR(200) NOT NULL, -- Tên Chi nhánh (vd: StayHub - Chi nhánh Đà Lạt)
   `description` TEXT DEFAULT NULL,
   `city` VARCHAR(100) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `homestays` (
   INDEX `idx_homestays_city` (`city`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 3. BẢNG ROOMS (Phòng trong từng homestay)
+-- 3. BẢNG ROOMS (Phòng nghỉ thuộc từng chi nhánh StayHub)
 CREATE TABLE `rooms` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `homestay_id` INT NOT NULL,
