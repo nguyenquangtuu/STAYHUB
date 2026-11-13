@@ -166,6 +166,13 @@ public class Homestay implements Serializable {
         if (imageUrl != null && !imageUrl.isEmpty()) {
             return imageUrl;
         }
+        if (amenities != null) {
+            for (String a : amenities) {
+                if (a != null && a.startsWith("img:")) {
+                    return a.substring(4);
+                }
+            }
+        }
         // Ảnh homestay demo theo ID
         switch (id % 3) {
             case 1:
@@ -175,6 +182,21 @@ public class Homestay implements Serializable {
             default:
                 return "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop&q=80";
         }
+    }
+
+    /**
+     * Trả về danh sách tiện ích người dùng có thể xem (bỏ qua tag kỹ thuật như img:)
+     */
+    public List<String> getDisplayAmenities() {
+        List<String> displayList = new ArrayList<>();
+        if (amenities != null) {
+            for (String a : amenities) {
+                if (a != null && !a.startsWith("img:")) {
+                    displayList.add(a);
+                }
+            }
+        }
+        return displayList;
     }
 
     public void setImageUrl(String imageUrl) {

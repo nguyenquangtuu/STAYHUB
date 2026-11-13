@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.stayhub.app.R;
 import com.stayhub.app.data.model.Homestay;
 import com.stayhub.app.databinding.ItemAdminHomestayBinding;
 
@@ -69,6 +71,13 @@ public class AdminHomestayAdapter extends RecyclerView.Adapter<AdminHomestayAdap
             binding.tvHomestayRating.setText(String.format(java.util.Locale.US, "%.1f", homestay.getAvgRating()));
             binding.tvHomestayLocation.setText(homestay.getAddress() + ", " + homestay.getCity());
 
+            Glide.with(itemView.getContext())
+                    .load(homestay.getImageUrl())
+                    .placeholder(R.drawable.bg_image_placeholder)
+                    .error(R.drawable.bg_image_placeholder)
+                    .centerCrop()
+                    .into(binding.ivHomestayThumb);
+
             if (homestay.getDescription() != null && !homestay.getDescription().isEmpty()) {
                 binding.tvHomestayDesc.setText(homestay.getDescription());
                 binding.tvHomestayDesc.setVisibility(android.view.View.VISIBLE);
@@ -86,3 +95,4 @@ public class AdminHomestayAdapter extends RecyclerView.Adapter<AdminHomestayAdap
         }
     }
 }
+

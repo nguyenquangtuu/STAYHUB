@@ -21,6 +21,7 @@ import com.stayhub.app.util.Constants;
 import com.stayhub.app.viewmodel.HomestayViewModel;
 import com.stayhub.app.viewmodel.ReviewViewModel;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -163,8 +164,9 @@ public class HomestayDetailActivity extends AppCompatActivity {
 
         // Hiển thị Chips tiện ích
         binding.chipGroupAmenities.removeAllViews();
-        if (homestay.getAmenities() != null && !homestay.getAmenities().isEmpty()) {
-            for (String amenity : homestay.getAmenities()) {
+        List<String> displayAmenities = homestay.getDisplayAmenities();
+        if (displayAmenities != null && !displayAmenities.isEmpty()) {
+            for (String amenity : displayAmenities) {
                 Chip chip = new Chip(this);
                 chip.setText(getAmenityDisplayName(amenity));
                 chip.setClickable(false);
