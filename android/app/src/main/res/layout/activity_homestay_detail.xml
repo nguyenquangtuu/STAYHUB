@@ -19,6 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/primary"
+            app:expandedTitleTextColor="@android:color/transparent"
+            app:collapsedTitleTextColor="@color/on_primary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:statusBarScrim="@color/primary_dark">
 
@@ -32,11 +34,12 @@
                 android:src="@drawable/bg_image_placeholder"
                 app:layout_collapseMode="parallax" />
 
+            <!-- Lớp phủ gradient nhẹ trên đỉnh giúp nút Back luôn nổi bật -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="bottom"
-                android:background="#66000000" />
+                android:layout_height="72dp"
+                android:layout_gravity="top"
+                android:background="@drawable/bg_top_scrim" />
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -189,7 +192,8 @@
                 android:layout_marginStart="@dimen/spacing_16"
                 android:layout_marginTop="@dimen/spacing_8"
                 android:layout_marginEnd="@dimen/spacing_16"
-                app:chipSpacingHorizontal="@dimen/spacing_8" />
+                app:chipSpacingHorizontal="@dimen/spacing_8"
+                app:chipSpacingVertical="@dimen/spacing_4" />
 
             <!-- Danh sách phòng -->
             <TextView

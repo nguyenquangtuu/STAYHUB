@@ -18,6 +18,8 @@
     <dimen name="card_corner_radius">12dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="card_stroke_width">1dp</dimen>
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_corner_radius">16dp</dimen>
 
     <!-- Component heights -->
     <dimen name="button_height">52dp</dimen>
