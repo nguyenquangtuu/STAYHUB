@@ -90,5 +90,42 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <!-- Admin Side Drawer Styling (Vuông vức, phẳng, chuyên nghiệp chuẩn Enterprise Dashboard) -->
+    <style name="ShapeAppearance.StayHub.AdminDrawer" parent="">
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <style name="ShapeAppearance.StayHub.AdminDrawerItem" parent="">
+        <item name="cornerSize">6dp</item>
+    </style>
+
+    <style name="Widget.StayHub.AdminNavigationView" parent="Widget.Material3.NavigationView">
+        <item name="shapeAppearance">@style/ShapeAppearance.StayHub.AdminDrawer</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.StayHub.AdminDrawer</item>
+        <item name="itemShapeAppearance">@style/ShapeAppearance.StayHub.AdminDrawerItem</item>
+        <item name="itemShapeAppearanceOverlay">@style/ShapeAppearance.StayHub.AdminDrawerItem</item>
+        <item name="itemShapeFillColor">@color/selector_admin_drawer_item_bg</item>
+        <item name="itemIconTint">@color/selector_admin_drawer_item_icon</item>
+        <item name="itemTextColor">@color/selector_admin_drawer_item_text</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.StayHub.AdminDrawer.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.StayHub.AdminDrawer.Inactive</item>
+        <item name="itemShapeInsetStart">8dp</item>
+        <item name="itemShapeInsetEnd">8dp</item>
+        <item name="itemShapeInsetTop">2dp</item>
+        <item name="itemShapeInsetBottom">2dp</item>
+        <item name="android:background">@color/surface</item>
+        <item name="elevation">16dp</item>
+    </style>
+
+    <style name="TextAppearance.StayHub.AdminDrawer.Active" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <style name="TextAppearance.StayHub.AdminDrawer.Inactive" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
 </resources>
 

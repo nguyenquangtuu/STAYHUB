@@ -388,13 +388,17 @@
     <!-- 2. Menu Bên Trái (Side Navigation Drawer của riêng màn Quản trị) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/adminNavigationView"
+        style="@style/Widget.StayHub.AdminNavigationView"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/surface"
         app:headerLayout="@layout/nav_header_admin"
-        app:itemIconTint="@color/primary"
-        app:itemTextColor="@color/text_primary"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.StayHub.AdminDrawer"
+        app:itemShapeAppearanceOverlay="@style/ShapeAppearance.StayHub.AdminDrawerItem"
+        app:itemShapeFillColor="@color/selector_admin_drawer_item_bg"
+        app:itemIconTint="@color/selector_admin_drawer_item_icon"
+        app:itemTextColor="@color/selector_admin_drawer_item_text"
         app:menu="@menu/menu_admin_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
