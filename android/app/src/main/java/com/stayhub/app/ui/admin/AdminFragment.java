@@ -261,7 +261,7 @@ public class AdminFragment extends Fragment {
                 openEditHomestayActivity(null);
             } else if (currentSection == Section.ROOMS) {
                 if (selectedHomestay == null) {
-                    Toast.makeText(requireContext(), "Vui lòng chọn hoặc thêm homestay trước!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Vui lòng chọn hoặc thêm chi nhánh trước!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 showAddOrEditRoomDialog(null);
@@ -489,14 +489,14 @@ public class AdminFragment extends Fragment {
 
     private void showDeleteHomestayDialog(Homestay homestay) {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Xóa Homestay")
-                .setMessage("Bạn có chắc chắn muốn xóa homestay \"" + homestay.getName() + "\" không?")
+                .setTitle("Xóa Chi Nhánh")
+                .setMessage("Bạn có chắc chắn muốn xóa chi nhánh \"" + homestay.getName() + "\" không?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
                     binding.progressAdmin.setVisibility(View.VISIBLE);
                     homestayRepository.deleteHomestay(homestay.getId(), new ApiCallback<Void>() {
                         @Override
                         public void onSuccess(Void data, String message) {
-                            Toast.makeText(requireContext(), "Đã xóa homestay", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Đã xóa chi nhánh", Toast.LENGTH_SHORT).show();
                             loadHomestays();
                         }
 

@@ -117,7 +117,7 @@ public class AdminEditHomestayActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        binding.toolbarAdminEditHomestay.setTitle(isEditMode ? "Chỉnh sửa Homestay" : "Thêm Homestay Mới");
+        binding.toolbarAdminEditHomestay.setTitle(isEditMode ? "Chỉnh sửa Chi nhánh" : "Thêm Chi nhánh Mới");
         binding.toolbarAdminEditHomestay.setNavigationOnClickListener(v -> finish());
     }
 
@@ -328,7 +328,7 @@ public class AdminEditHomestayActivity extends AppCompatActivity {
         String city = (binding.spinnerCity.getSelectedItem() != null) ? binding.spinnerCity.getSelectedItem().toString() : "";
 
         if (TextUtils.isEmpty(name)) {
-            binding.tilHomestayName.setError("Vui lòng nhập tên homestay");
+            binding.tilHomestayName.setError("Vui lòng nhập tên chi nhánh (vd: StayHub - Chi nhánh Đà Lạt)");
             binding.etHomestayName.requestFocus();
             return;
         } else {
@@ -359,7 +359,7 @@ public class AdminEditHomestayActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Homestay data, String message) {
                     binding.layoutLoadingOverlay.setVisibility(View.GONE);
-                    Toast.makeText(AdminEditHomestayActivity.this, "Cập nhật homestay thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminEditHomestayActivity.this, "Cập nhật chi nhánh thành công!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 }
@@ -375,7 +375,7 @@ public class AdminEditHomestayActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Homestay data, String message) {
                     binding.layoutLoadingOverlay.setVisibility(View.GONE);
-                    Toast.makeText(AdminEditHomestayActivity.this, "Tạo homestay mới thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminEditHomestayActivity.this, "Tạo chi nhánh mới thành công!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 }
@@ -383,9 +383,10 @@ public class AdminEditHomestayActivity extends AppCompatActivity {
                 @Override
                 public void onError(String errorMessage) {
                     binding.layoutLoadingOverlay.setVisibility(View.GONE);
-                    Snackbar.make(binding.getRoot(), errorMessage != null ? errorMessage : "Tạo homestay thất bại", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.getRoot(), errorMessage != null ? errorMessage : "Tạo chi nhánh thất bại", Snackbar.LENGTH_LONG).show();
                 }
             });
         }
     }
 }
+

@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/text_primary"
-            app:title="Chỉnh sửa Homestay"
+            app:title="Chỉnh sửa Chi nhánh"
             app:titleTextColor="@color/text_primary"
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1. Hình ảnh bìa Homestay"
+                android:text="1. Hình ảnh bìa Chi nhánh StayHub"
                 android:textColor="@color/primary"
                 android:textSize="@dimen/text_size_title_medium"
                 android:textStyle="bold" />
@@ -136,7 +136,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2. Thông tin cơ bản"
+                android:text="2. Thông tin cơ sở chi nhánh"
                 android:textColor="@color/primary"
                 android:textSize="@dimen/text_size_title_medium"
                 android:textStyle="bold" />
@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_12"
-                android:hint="Tên Homestay *">
+                android:hint="Tên Chi nhánh (vd: StayHub - Chi nhánh Đà Lạt) *">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHomestayName"
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_12"
-                android:hint="Mô tả chi tiết về Homestay">
+                android:hint="Mô tả chi tiết về chi nhánh này">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHomestayDescription"
@@ -390,7 +390,7 @@
                 android:layout_marginTop="@dimen/spacing_24"
                 android:layout_marginBottom="@dimen/spacing_32"
                 android:backgroundTint="@color/primary"
-                android:text="LƯU THÔNG TIN HOMESTAY"
+                android:text="LƯU THÔNG TIN CHI NHÁNH"
                 android:textColor="@color/on_primary"
                 android:textSize="@dimen/text_size_title_medium"
                 android:textStyle="bold"
@@ -418,3 +418,4 @@
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
